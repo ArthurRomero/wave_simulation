@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "test1.h"
+#include "simulation.h"
 
 
 
@@ -26,7 +26,7 @@ double v(double z,double r0, double el0, double w0);// prototype
 
 
 
-double *(*gp0)(double z,double r0,double el0, double w0, double ix*p);//prototype
+//double *(*gp0)(double z,double r0,double el0, double w0, double ix*p);//prototype
 
 
 int main( void ){
@@ -334,7 +334,7 @@ double beta = tilt*pi;// since tilt=0, beta=0.
     w1=w(G1_z,r0,el0,w0);
     
     
-   printf("the value of w1 is:  %.12f\n",w1);// matches with Mathematica value of w1
+   //printf("the value of w1 is:  %.12f\n",w1);// matches with Mathematica value of w1
     
  
     
@@ -356,11 +356,11 @@ double beta = tilt*pi;// since tilt=0, beta=0.
     
     //gp0[zstart + zres*1, r0, el0, w0];(Mathematica)
     
-    double gp0[300][2]={{0}};
-    for (int i=0; i<=300; i++) {
-        gp0[i][0]=0;
-        printf("value of gp0: %f\n",gp0[i][0]);
-    }
+    //double gp0[300][2]={{0}};
+    //for (int i=0; i<=300; i++) {
+     //   gp0[i][0]=0;
+        //printf("value of gp0: %f\t and i: %d \n",gp0[i][0],i);
+    //}
 
     
     
@@ -370,7 +370,7 @@ double beta = tilt*pi;// since tilt=0, beta=0.
     
     
     
-   gp0 = gp0(zstart+zres*1,r0,el0,w0);
+   //gp0 = gp0(zstart+zres*1,r0,el0,w0);
 
     
     
@@ -449,44 +449,21 @@ double v(double z,double r0, double el0, double w0)
 
 
 
-double gp0(double z,double r0,double el0, double w0,double ix*p)
-{
-    double w1;
-    double ix[300][1]={0};
+//double gp0(double z,double r0,double el0, double w0,double ix*p)
+//{
+  //  double w1;
     
-    double zstart = -0.1;
-    double zend = 2.1;
-    double xstart = -200*pow(10,-6);
-    double xend = 200*pow(10,-6);
-    double ystart = -0.11*pow(10,-3);
-    double yend = 0.11*pow(10,-3);
-    double pi = 3.14159265;
+    //w1 = w(z,r0,el0,w0);
     
-    double xpnts = 300;
-    double ypnts = 300;
-    double zpnts = 300;
-    
-    w1 = w(z,r0,el0,w0);
-    
-    for (int i=0; i<=300; i++) {
+    //for (int i=0; i<=300; i++) {
         
         
         
         
-        ix[i][1]=exp(-pi*pow((ix[i][0]/w1),2));
+      //  ix[i][1]=exp(-pi*pow((ix[i][0]/w1),2));
         
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    return(ix);
+   // }
 
-}
+//    return(ix);
+
+//}
