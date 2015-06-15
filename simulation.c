@@ -24,9 +24,13 @@ double el(double z, double r0, double el0, double w0);// prototype
 
 double v(double z,double r0, double el0, double w0);// prototype
 
+double sinc(double x);//prototype
+
 
 
 double gp0(double z,double r0,double el0, double w0,double ix_);//prototype
+
+double gp1(double z,double r0,double el0, double w0,double ix_);//prototype
 
 
 int main( void ){
@@ -275,7 +279,7 @@ double beta = tilt*pi;// since tilt=0, beta=0.
     
     for (int i=0; i<=300; i++) {
         ix[i][0]= xstart+(i-1)*((xend-xstart)/(xpnts-1));
-       printf("the values of ix[i] and i are: %f\t and %d\n",ix[i][0],i);//different format, but same values as in the Mathematica code
+       //printf("the values of ix[i] and i are: %f\t and %d\n",ix[i][0],i);//different format, but same values as in the Mathematica code
     }
     
     
@@ -357,14 +361,14 @@ double beta = tilt*pi;// since tilt=0, beta=0.
     //gp0:
     
     
-    for (int i=0; i<=300; i++) {
+  //  for (int i=0; i<=300; i++) {
         
         
-        ix_= ix[i][1];
+        //ix_= ix[i][1];
         
-    ix[i][1]=gp0(zstart + zres*1, r0, el0, w0,ix[i][1]);
-        printf("value of ix: %.12f\t and i: %d \n",ix[i][0],i);
-    }
+       // ix[i][1]=gp0(zstart + zres*1, r0, el0, w0,ix_);
+        //printf("value of ix: %.12f\t and i: %d \n",ix[i][0],i);
+    //}
  
     
     
@@ -382,12 +386,15 @@ double beta = tilt*pi;// since tilt=0, beta=0.
     
     
     double el2;
+    double test1;
     
-    
+    test1 = sinc(0);
+    printf("the value of test1 is: %f \n",test1);
     
     el2 = el(zstart-G1_z+zres*100, r1, el1, w1);
     
     //printf("the value of el2 is:  %.12f\n",el2);// might be wrong
+    
     
     
     
@@ -471,4 +478,46 @@ double gp0(double z,double r0,double el0, double w0,double ix_)
 
     return(ix_);
 
+}
+
+double sinc(double x)
+{
+    
+    double sinc;
+    
+    if (x==0)
+    {
+        sinc = 1;
+    }
+        else
+        {
+    sinc = (sin(x))/x;
+        }
+    
+    return(sinc);
+}
+
+
+
+
+double gp1(double z,double r0,double el0, double w0,double ix_)
+{
+    double coef;
+    double lim=5;
+    
+    
+    
+    
+    
+    
+    
+    for (int n=-lim; n<=lim; n++) {
+        for (int m=-lim; m<=lim; m++) {
+            
+            double dn =n-m;
+            double dm = (m+n)/2;
+            
+            
+        }
+    }
 }
