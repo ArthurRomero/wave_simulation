@@ -426,7 +426,7 @@ double beta = tilt*pi;// since tilt=0, beta=0.
     
     el2 = el(zstart-G1_z+zres*100, r1, el1, w1);
     
-    //printf("the value of el2 is:  %.12f\n",el2);// might be wrong
+    printf("the value of el2 is:  %.12f\n",el2);// matches with mathematica value
     
     for (int i=0; i<=300; i++) {
      
@@ -482,7 +482,7 @@ double el(double z,double r0, double el0, double w0)
     double test6;
     test4 = (z)/(zp(z,r0));
     test5 = pow(((lambda*zp(z,r0))/(el0*w0)),2);
-    test6 =(pow((1+test5),1/2));
+    test6 =(sqrt((1+test5)));
 
     
     //w = el0*fabs((z)/(((zp(z,r0)))))*pow(1+pow(lambda,2)*pow(zp(z,r0),2)/((pow((el0*w0),2))),1/2);
@@ -491,9 +491,9 @@ double el(double z,double r0, double el0, double w0)
     
     w = (el0)*(fabs(test4))*(test6);
     
-    printf("the value of test4 is : %0.12f\n",test4);
-    printf("the value of test5 is : %0.12f\n",test5);
-    printf("the value of test6 is : %0.12f\n",test6);
+    //printf("the value of test4 is : %0.12f\n",test4);
+   //printf("the value of test5 is : %0.12f\n",test5);
+    //printf("the value of test6 is : %0.12f\n",test6);
 
 
     
@@ -764,32 +764,21 @@ void gp1(double z,double r0,double el0, double w0)
 
     
     el1=el(G1_z,r0,el0,w0);
-    //el2 = el(zstart - G1_z + zres*100, r1, el1, w1);
     
-    printf(" the values of zstart,G1_z,zres, r1,el1 and w1 are: %f \t %f \t %f \t %f \t %f \t %f\n",zstart,G1_z,zres,r1,el1,w1);
-    
+    //printf(" the values of zstart,G1_z,zres, r1,el1 and w1 are: %f \t %f \t %f \t %f \t %f \t %f\n",zstart,G1_z,zres,r1,el1,w1);
     
     
     
     
     
-    double test2;
-    double test3;
     
-    test3 = (zstart - G1_z + (zres*100));
-    
-    test2 = zp((zstart - G1_z + (zres*100)),r1);
-    
-    
-    //printf("the value of z is :%0.9f \t %f \n",test3, r1);
-    
-    //printf("the value of zp is: %0.12f\n",test2);
+ 
 
     el2 = el(zstart - G1_z + zres*100, r1, el1, w1);
     
     
     
-        printf("the value of el2 is : %0.12f\n",el2);
+       printf("the value of el2 is : %0.12f\n",el2);
 
 
    
