@@ -62,7 +62,7 @@ double chargeratio =0;//strength of image charge(units of e (?))
     
 double lam = pow((150)/(4000),1/2)*pow(10,-10);// 1.936E-10//
 
-double lambda = 0.000000000001;
+double lambda = 0.00000000001;
 
 
 
@@ -359,7 +359,7 @@ double beta = tilt*pi;// since tilt=0, beta=0.
     r1 = v(G1_z,r0,el0,w0);
     
     
-    printf("the value of r1 is:  %.12f\n",r1);//matches with Mathematica value of r1
+    //printf("the value of r1 is:  %.12f\n",r1);//matches with Mathematica value of r1
     
     
     el1=el(G1_z,r0,el0,w0);
@@ -452,7 +452,7 @@ double zp(double z, double v)
 {
 
     double zp;
-    zp = v*z/(z+v);
+    zp = (v*z)/(z+v);
     return(zp);
     
 }
@@ -463,7 +463,7 @@ double w(double z,double r0, double el0, double w0)
 {
 
 double w;
-double lambda = 0.000000000001;
+double lambda = 0.00000000001;
 
 w = el0*fabs((z)/(((zp(z,r0)))))*pow(1+pow(lambda,2)*pow(zp(z,r0),2)/((pow((el0*w0),2))),1/2);
                     
@@ -475,10 +475,32 @@ double el(double z,double r0, double el0, double w0)
 {
     
     double w;
-    double lambda = 0.000000000001;
+    double lambda = 0.00000000001;
+    
+    double test4;
+    double test5;
+    double test6;
+    test4 = (z)/(zp(z,r0));
+    test5 = pow(((lambda*zp(z,r0))/(el0*w0)),2);
+    test6 =(pow((1+test5),1/2));
+
     
     //w = el0*fabs((z)/(((zp(z,r0)))))*pow(1+pow(lambda,2)*pow(zp(z,r0),2)/((pow((el0*w0),2))),1/2);
-    w = el0*fabs((z)/(((zp(z,r0)))))*pow(1+pow((lambda*zp(z,r0)/(el0*w0)),2),1/2);
+   // w = el0*fabs((z)/(((zp(z,r0)))))*pow((1+pow((lambda*zp(z,r0)/(el0*w0)),2)),1/2);
+    
+    
+    w = (el0)*(fabs(test4))*(test6);
+    
+    printf("the value of test4 is : %0.12f\n",test4);
+    printf("the value of test5 is : %0.12f\n",test5);
+    printf("the value of test6 is : %0.12f\n",test6);
+
+
+    
+    
+    
+    
+   
     return(w);
     
 }
@@ -488,7 +510,7 @@ double v(double z,double r0, double el0, double w0)
     
     double v;
     
-    double lambda = 0.000000000001;
+    double lambda = 0.00000000001;
     
     v=(z)/(1-zp(z,r0)/(z*(1+pow(((lambda*zp(z,r0)/(el0*w0))),2))));
     
@@ -563,7 +585,7 @@ void gp1(double z,double r0,double el0, double w0)
     
     double chargeratio =0;//strength of image charge(units of e (?))
     double lam = pow((150)/(4000),1/2)*pow(10,-10);// 1.936E-10//
-    double lambda = 0.000000000001;
+    double lambda = 0.00000000001;
     double eta1 = .4;//G1 open fraction
     double eta2 = .4;//G2 open fraction
     double d = 0.0000001;// period of grating
@@ -742,8 +764,34 @@ void gp1(double z,double r0,double el0, double w0)
 
     
     el1=el(G1_z,r0,el0,w0);
+    //el2 = el(zstart - G1_z + zres*100, r1, el1, w1);
+    
+    printf(" the values of zstart,G1_z,zres, r1,el1 and w1 are: %f \t %f \t %f \t %f \t %f \t %f\n",zstart,G1_z,zres,r1,el1,w1);
+    
+    
+    
+    
+    
+    
+    double test2;
+    double test3;
+    
+    test3 = (zstart - G1_z + (zres*100));
+    
+    test2 = zp((zstart - G1_z + (zres*100)),r1);
+    
+    
+    //printf("the value of z is :%0.9f \t %f \n",test3, r1);
+    
+    //printf("the value of zp is: %0.12f\n",test2);
+
     el2 = el(zstart - G1_z + zres*100, r1, el1, w1);
     
+    
+    
+        printf("the value of el2 is : %0.12f\n",el2);
+
+
    
     for (int i=0; i<300; i++) {
         ix[i][0]= xstart+(i-1)*((xend-xstart)/(xpnts-1));
@@ -791,7 +839,7 @@ void gp1(double z,double r0,double el0, double w0)
             
             
             
-            printf("the value of el2 is:    %0.9f\n",el2);
+            //printf("the value of el2 is:    %0.9f\n",el2);
             
             coef = coef*exp(-pi*(dn*lambda*z/(pow(d*el2,2))));
             
