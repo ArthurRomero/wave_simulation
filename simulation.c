@@ -426,7 +426,7 @@ double beta = tilt*pi;// since tilt=0, beta=0.
     
     el2 = el(zstart-G1_z+zres*100, r1, el1, w1);
     
-    printf("the value of el2 is:  %.12f\n",el2);// matches with mathematica value
+   // printf("the value of el2 is:  %.12f\n",el2);// matches with mathematica value
     
     for (int i=0; i<=300; i++) {
      
@@ -576,7 +576,6 @@ void gp0 (double z,double r0,double el0, double w0)
 void gp1(double z,double r0,double el0, double w0)
 {
     double coef;
-    double coef1;
     double cutoff=pow(10,-3);
     double lim=5;
     
@@ -589,9 +588,7 @@ void gp1(double z,double r0,double el0, double w0)
     double eta1 = .4;//G1 open fraction
     double eta2 = .4;//G2 open fraction
     double d = 0.0000001;// period of grating
-    //double r0 = -4.04;//initial radius of wavefront curvature
-    //double el0 = 0.000001;// initial coherence width
-    //double w0 = 0.00003;// initial beam width
+
     double G1_z = 0.000001;
     double G2_z = 1;
     double G2_x = d/2;
@@ -610,7 +607,7 @@ void gp1(double z,double r0,double el0, double w0)
     double r1;
     double el1;
     double el2;
-    //double w1;
+  
     
     double xpnts = 300;
     double ypnts = 300;
@@ -778,7 +775,7 @@ void gp1(double z,double r0,double el0, double w0)
     
     
     
-       printf("the value of el2 is : %0.12f\n",el2);
+       //printf("the value of el2 is : %0.12f\n",el2);
 
 
    
@@ -804,6 +801,7 @@ void gp1(double z,double r0,double el0, double w0)
             double dn =n-m;
             double dm = (m+n)/2;
             double test1=0;
+            double coef2;
             
             
             
@@ -813,31 +811,63 @@ void gp1(double z,double r0,double el0, double w0)
             
             if (test1==1)
             {
-            coef = sinc(eta1*pi*n)*sinc(eta1*pi*m)*pow((eta1), 2);
+            coef = sinc(eta1*pi*n)*(sinc(eta1*pi*m)*pow((eta1), 2));
                 
                 //printf("the value of eta1ddd is: %f\n",eta1);
             }
             else
             {
             coef = ReT[(n+20)][1]*ReT[(m+20)][1]+ImT[(n+20)][1]*ImT[(m+20)][1];//
-                //printf("the value of eta1cccc is: %f\n",eta1);
+                //printf("the value of eta1 is: %f\n",eta1);
                   //printf("the value %d \t and %d \t of ReT and ImT are: %0.9f \t %0.9f \n",(n+20),(m+20),ReT[(n+20)][1],ImT[(m+20)][1]);
                 
                 //printf("the value of coef, m and n are: %0.10f \t %d \t %d \n",coef,m,n);//!!!! results match with mathematica so far.
+                
+                
             }
             
             
             
-            //printf("the value of el2 is:    %0.9f\n",el2);
+            //printf("the value of el2 is:    %0.9f\n",el2);//ok, it matches.
             
-            coef = coef*exp(-pi*(dn*lambda*z/(pow(d*el2,2))));
-            
+            coef = coef*exp(-pi*(dn*(lambda*z/(pow(d*el2,2)))));// added isfinite macro in order to avoid inf values
+            if (isfinite(coef)==0){
+                coef=0;
+            }
             
         
-          //printf("the value of coef and cutoff are: %0.10f \t %f \t %d \t %d \n",coef, cutoff,n,m);
+          //printf("the value of coef and cutoff are: %0.10f \t %f \t %d \t %d \n",coef, cutoff,n,m);// coef values match
+            
+            
+            
             if (coef>=cutoff) {
-            //for (int i=0; i<300; i++) {
-                //test1 = ix[1][1] + (coef*exp(pow(-pi*((ix[1][0]-dm*lambda*z/d)/w2),2)*cos(2*pi*(dn/d)*((ix[1][0]-dm*lambda*z/d))*(1-z/r2))));
+            for (int i=0; i<300; i++) {
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                coef2=(coef*(exp(pow(-pi*((ix[i][0]-dm*lambda*z/d)/w2),2)*cos(2*pi*(dn/d)*((ix[i][0]-dm*lambda*z/d))*(1-z/r2)))));
+                
+                if (isfinite(coef2)==0){
+                    coef2=0;
+                }
+
+                
+                
+                
+                
+               
+                ix[i][1] = ix[i][1] + coef2;
+                
+                
+                
                 
                 
                 //printf("the value of coef and cutoff are: %f \t %f \n",coef, cutoff);
@@ -847,7 +877,7 @@ void gp1(double z,double r0,double el0, double w0)
                 
                 
                     //printf("test\n");
-                    //printf("the values of test1[i] and i are: %0.15f\n",ix);
+                    printf("the values of test1[i] and i are: %0.15f \t %d\n",ix[i][1],i);
                     continue;
                 }
                 
@@ -864,6 +894,6 @@ void gp1(double z,double r0,double el0, double w0)
 
 
 
-
+}
 
 
