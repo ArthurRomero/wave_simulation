@@ -65,7 +65,7 @@ void gp0(double z,double r0,double el0, double w0);//prototype
 
 void gp1(double z,double r0,double el0, double w0);//prototype
 
-
+void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double r1x, double el1y, double w1y, double r1y, double G2_x);//prototype
 
 
 
@@ -414,11 +414,8 @@ double beta = tilt*pi;// since tilt=0, beta=0.
     
  
     
-    gp1(zstart - G1_z + zres*100,r1,el1,w1);
-    for (int i=0; i<300; i++) {
-    //printf("theeee values of ix[i] and i are: %0.15f\t and %d\n",ix[i][1],i);
-    
-      }
+    //gp1(zstart - G1_z + zres*100,r1,el1,w1);
+ 
     
 
     
@@ -438,6 +435,19 @@ double beta = tilt*pi;// since tilt=0, beta=0.
     
     
     
+    
+    ///////////////////////////////////////////////////////
+    //gp2:
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    gp2(G2_z-G1_z,zstart+0*zres,theta,el1,w1,r1,el1,w1,r1,G2_x);
     
     
     
@@ -464,10 +474,18 @@ double zp(double z, double v)
 double w(double z,double r0, double el0, double w0)
 {
 
-double w;
-double lambda = 0.00000000001;
+    double w;
+    double lambda = 0.00000000001;
+    double test4;
+    double test5;
+    double test6;
+    test4 = (z)/(zp(z,r0));
+    test5 = pow(((lambda*zp(z,r0))/(el0*w0)),2);
+    test6 =(sqrt((1+test5)));
+    
 
-w = el0*fabs((z)/(((zp(z,r0)))))*pow(1+pow(lambda,2)*pow(zp(z,r0),2)/((pow((el0*w0),2))),1/2);
+//w = el0*fabs((z)/(((zp(z,r0)))))*pow(1+pow(lambda,2)*pow(zp(z,r0),2)/((pow((el0*w0),2))),1/2);
+    w = (el0)*(fabs((z)/(zp(z,r0)))*((sqrt((1+test5)))));
                     
 return(w);
 
@@ -492,6 +510,7 @@ double el(double z,double r0, double el0, double w0)
     
     
     w = (el0)*(fabs(test4))*(test6);
+    
     
     //printf("the value of test4 is : %0.12f\n",test4);
    //printf("the value of test5 is : %0.12f\n",test5);
@@ -801,9 +820,7 @@ void gp1(double z,double r0,double el0, double w0)
                         double dm = (m+n)/2;
                         double test1=0;
                         double coef2=0;
-                        double coef2A;
-                        double coef2B;
-                        double S=0;
+                        
                 
             
             
@@ -867,7 +884,7 @@ void gp1(double z,double r0,double el0, double w0)
                 
                                 ix[i][1] = ix[i][1] + coef2;
                                 
-                                //printf("the values of ix[i][1]ddd are:  %0.19f \t %d \n",ix[i][1],i);// I noticed that the even though the values are different from the ones in mathematica, the pattern is the same. The values might be different due the limited precision of C relative to Mathematica.
+                                //printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);// I noticed that the even though the values are different from the ones in mathematica, the pattern is the same. The values might be different due the limited precision of C relative to Mathematica.
 
                 
                 
@@ -896,6 +913,155 @@ void gp1(double z,double r0,double el0, double w0)
 
 
 
+
+
+void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double r1x, double el1y, double w1y, double r1y, double G2_x)
+{
+    
+    
+    
+   
+    double zstart = -0.1;
+    double zend = 2.1;
+    double xstart = -200*pow(10,-6);
+    double xend = 200*pow(10,-6);
+    double ystart = -0.11*pow(10,-3);
+    double yend = 0.11*pow(10,-3);
+    
+    
+    
+    
+    double xpnts = 300;
+    double ypnts = 300;
+    double zpnts = 300;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    double theta = pi*mytheta/180;
+    double d1=d;
+    double d2=d;
+    double z13 = z12+z23;
+    
+   // printf("the values of theta, d1,d2 and z13 are:   %0.15f \t %0.15f \t %0.15f \t %0.15f \n",theta,d1,d2,z13);// the values match with the mathematica values.
+    
+    
+    
+    double el3x = el(z12+z23, r1x, el1x, w1x);//G2z - G1z + zstart + 0*zres, r1, el1, w1
+    //printf("the value of el3x is: %0.15f\n",el3x);
+    
+    
+    double w3x = w(z12+z23,r1x,el1x,w1x);
+   printf("the value of w3x is: %0.15f\n",w3x);
+    
+    
+    double v3x = v(z12+z23,r1x,el1x,w1x);
+   //  printf("the value of v3x is: %f\n",v3x);
+    
+    
+    double el3y = el(z12+z23,r1y,el1y, w1y);
+   // printf("the value of el3y is: %f\n",el3y);
+    
+    
+    double w3y = w(z12+z23,r1y,el1y,w1y);
+    // printf("the value of w3y is: %f\n",w3y);
+    
+    
+    double v3y = v(z12+z23,r1y,el1y,w1y);
+    // printf("the value of v3x is: %f\n",v3x);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    double ix[300][2]={0};
+    
+    
+    for (int i=0; i<300; i++) {
+        ix[i][0]= xstart+(i-1)*((xend-xstart)/(xpnts-1));
+       // printf("the values of ix[i] and i are: %f\t \t %d\n",ix[i][0],i);//different format, but same values as in the Mathematica code
+    }
+
+    
+    double phix[300][2]={0};
+    
+    
+    for (int i=0; i<300; i++) {
+        ix[i][0]= xstart+(i-1)*((xend-xstart)/(xpnts-1));
+        //printf("the values of phix[i] and i are: %f\t \t %d\n",ix[i][0],i);//different format, but same values as in the Mathematica code
+    }
+    
+    double phi =0;
+    
+    double cutoff = 0.001;
+    
+    double lim =5;
+    
+    double coef =0;
+    double dn = 0;
+    double dm =0;
+    double m=0;
+    double n=0;
+    double a =0;
+    double b =0;
+    double c=0;
+    double d=0;
+    
+    
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+}
 
 
 
