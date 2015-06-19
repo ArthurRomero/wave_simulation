@@ -19,12 +19,31 @@
 
 
 
-static double e_charge = 0.00000000000000000016021765;
+double e_charge = 0.00000000000000000016021765;
 double e_mass = 0.00000000000000000000000000000091093819;
 double Plancks = 0.0000000000000000000000000000000006626068;
 double Coulomb = 0.00000000898755179;
-static double pi = 3.14159265358979;
-static double const_e = 2.71828182845905;
+double pi = 3.14159265358979;
+double const_e = 2.71828182845905;
+double chargeratio =0;//strength of image charge(units of e (?))
+
+double lambda = 0.00000000001;
+
+
+
+double eta1 = .4;//G1 open fraction
+double eta2 = .4;//G2 open fraction
+double d = 0.0000001;// period of grating
+
+double r0 = -4.04;//initial radius of wavefront curvature
+double el0 = 0.000001;// initial coherence width
+double w0 = 0.00003;// initial beam width
+
+double G1_z = 0.000001;
+double G2_z = 1;
+double G2_x = 0.00000005; //d/2;
+
+double theta = 0;
 
 
 
@@ -56,29 +75,12 @@ int main( void ){
 
 
 
-double chargeratio =0;//strength of image charge(units of e (?))
 
 
     
 double lam = pow((150)/(4000),1/2)*pow(10,-10);// 1.936E-10//
 
-double lambda = 0.00000000001;
 
-
-
-double eta1 = .4;//G1 open fraction
-double eta2 = .4;//G2 open fraction
-double d = 0.0000001;// period of grating
-
-double r0 = -4.04;//initial radius of wavefront curvature
-double el0 = 0.000001;// initial coherence width
-double w0 = 0.00003;// initial beam width
-
-double G1_z = 0.000001;
-double G2_z = 1;
-double G2_x = d/2;
-
-double theta = 0;
 
 
 ///////////Fourier Components Variables//////////
@@ -294,7 +296,7 @@ double beta = tilt*pi;// since tilt=0, beta=0.
     }
     
     
-    double g1[600][1]={0}; // instead of 0, it should be NaN // I do not know the difference
+    double g1[600][2]={0}; // instead of 0, it should be NaN // I do not know the difference
     
     
     for (int i=0; i<=600; i++) {
@@ -305,7 +307,7 @@ double beta = tilt*pi;// since tilt=0, beta=0.
 
     
     
-    double g2[600][1]={0}; // instead of 0, it should be NaN // I do not know the difference
+    double g2[600][2]={0}; // instead of 0, it should be NaN // I do not know the difference
     
     
     for (int i=0; i<=600; i++) {
@@ -315,7 +317,7 @@ double beta = tilt*pi;// since tilt=0, beta=0.
  
     
     
-    double vis[300][1]={0}; //
+    double vis[300][2]={0}; //
     
     
     for (int i=0; i<=300; i++) {
@@ -580,18 +582,7 @@ void gp1(double z,double r0,double el0, double w0)
     double lim=5;
     
     
-    
-    
-    double chargeratio =0;//strength of image charge(units of e (?))
-    double lam = pow((150)/(4000),1/2)*pow(10,-10);// 1.936E-10//
-    double lambda = 0.00000000001;
-    double eta1 = .4;//G1 open fraction
-    double eta2 = .4;//G2 open fraction
-    double d = 0.0000001;// period of grating
 
-    double G1_z = 0.000001;
-    double G2_z = 1;
-    double G2_x = d/2;
     double energy = (1.5*pow(10,-18)/(pow(lambda,2)));
     double width = 4*pow(10,-8); //eta2*d
     double thick = 14*pow(10,-9);
@@ -614,7 +605,7 @@ void gp1(double z,double r0,double el0, double w0)
     double zpnts = 300;
 
     double pi = 3.14159265;
-    double ix[300][1]={0};
+   
     double zstart = -0.1;
     double zend = 2.1;
     double xstart = -200*pow(10,-6);
@@ -776,124 +767,137 @@ void gp1(double z,double r0,double el0, double w0)
     
     
        //printf("the value of el2 is : %0.12f\n",el2);
-
-
-   
+    
+    
+    
+    
+    
+    
+    
+    
+   double ix[300][2]={0};
+    
+    
     for (int i=0; i<300; i++) {
         ix[i][0]= xstart+(i-1)*((xend-xstart)/(xpnts-1));
+        //printf("the values of ix[i] ddand i are: %f\t and %d\n",ix[i][1],i);//different format, but same values as in the Mathematica code
     }
     
     
-
-
-
     
-
     
-
     
-    for (int n=-lim; n<=lim; n++) {
-        for (int m=-lim; m<=lim; m++) {
+    
+    
+    
+    
+    
+    
+    for (int i=0; i<300; i++) {
+        for (int n=-lim; n<=lim; n++) {
             
+            for (int m=-lim; m<=lim; m++) {
+                        double dn =n-m;
+                        double dm = (m+n)/2;
+                        double test1=0;
+                        double coef2=0;
+                        double coef2A;
+                        double coef2B;
+                        double S=0;
                 
             
             
-            double dn =n-m;
-            double dm = (m+n)/2;
-            double test1=0;
-            double coef2;
             
             
             
             
-            
-            
-            
-            if (test1==1)
-            {
-            coef = sinc(eta1*pi*n)*(sinc(eta1*pi*m)*pow((eta1), 2));
+                        if (test1==1)
+                        {
+                            coef = sinc(eta1*pi*n)*(sinc(eta1*pi*m)*pow((eta1), 2));
                 
-                //printf("the value of eta1ddd is: %f\n",eta1);
-            }
-            else
-            {
-            coef = ReT[(n+20)][1]*ReT[(m+20)][1]+ImT[(n+20)][1]*ImT[(m+20)][1];//
-                //printf("the value of eta1 is: %f\n",eta1);
-                  //printf("the value %d \t and %d \t of ReT and ImT are: %0.9f \t %0.9f \n",(n+20),(m+20),ReT[(n+20)][1],ImT[(m+20)][1]);
+                            //printf("the value of eta1 is: %f\n",eta1);
+                        }
+                        else
+                        {
+                            coef = ReT[(n+20)][1]*ReT[(m+20)][1]+ImT[(n+20)][1]*ImT[(m+20)][1];//
+                            //printf("the value of eta1 is: %f\n",eta1);
+                            //printf("the value %d \t and %d \t of ReT and ImT are: %0.9f \t %0.9f \n",(n+20),(m+20),ReT[(n+20)][1],ImT[(m+20)][1]);
                 
-                //printf("the value of coef, m and n are: %0.10f \t %d \t %d \n",coef,m,n);//!!!! results match with mathematica so far.
+                            //printf("the value of coef, m and n are: %0.10f \t %d \t %d \n",coef,m,n);//!!!! results match with mathematica so far.
                 
                 
-            }
+                        }
             
             
             
-            //printf("the value of el2 is:    %0.9f\n",el2);//ok, it matches.
+                        //printf("the value of el2 is:    %0.9f\n",el2);//ok, it matches.
             
-            coef = coef*exp(-pi*(dn*(lambda*z/(pow(d*el2,2)))));// added isfinite macro in order to avoid inf values
-            if (isfinite(coef)==0){
-                coef=0;
-            }
+                        coef = coef*exp(-pi*(dn*(lambda*z/(pow(d*el2,2)))));// added isfinite macro in order to avoid inf values
+                        if (isfinite(coef)==0){
+                            coef=0;
+                        }
             
         
-          //printf("the value of coef and cutoff are: %0.10f \t %f \t %d \t %d \n",coef, cutoff,n,m);// coef values match
+                        //printf("the value of coef and cutoff are: %0.10f \t %f \t %d \t %d \n",coef, cutoff,n,m,dn,dm);// coef values match
             
             
             
-            if (coef>=cutoff) {
-            for (int i=0; i<300; i++) {
+                        if (coef>=cutoff) {
+                            
                 
                 
                 
                 
                 
                 
+                                //coef2A = (coef*exp(-pi*pow(((ix[i][0]-dm*lambda*z/d)/w2),2)));
+                
+                                // printf("the value of coef2A is: %f\n",coef2A);
+                
+                                // coef2B = (cos(2*pi*(dn/d)*(ix[i][0]-dm*lambda*z/d)*(1-z/r2)));
+                
+                                // printf("the value of coef2B is: %f\n",coef2B);
                 
                 
+                                //coef2 = coef2A*coef2B;
+                                coef2 = (coef*exp(-pi*pow(((ix[i][0]-dm*lambda*z/d)/w2),2)*cos(2*pi*(dn/d)*(ix[i][0]-dm*lambda*z/d)*(1-z/r2))));
+                         
+                               // printf("the value of coef2 is: %f \t %d \t %d \t %f \t %f \n",coef2,n,m,dn,dm);//coef2 values are too low
+                     
                 
-                
-                
-                coef2=(coef*(exp(pow(-pi*((ix[i][0]-dm*lambda*z/d)/w2),2)*cos(2*pi*(dn/d)*((ix[i][0]-dm*lambda*z/d))*(1-z/r2)))));
-                
-                if (isfinite(coef2)==0){
-                    coef2=0;
-                }
+                                ix[i][1] = ix[i][1] + coef2;
+                                
+                                //printf("the values of ix[i][1]ddd are:  %0.19f \t %d \n",ix[i][1],i);// I noticed that the even though the values are different from the ones in mathematica, the pattern is the same. The values might be different due the limited precision of C relative to Mathematica.
 
                 
                 
                 
-                
-               
-                ix[i][1] = ix[i][1] + coef2;
-                
-                
-                
-                
-                
-                //printf("the value of coef and cutoff are: %f \t %f \n",coef, cutoff);
-                
-                
-                
-                
-                
-                    //printf("test\n");
-                    printf("the values of test1[i] and i are: %0.15f \t %d\n",ix[i][1],i);
-                    continue;
-                }
-                
-            }
+                                continue;
+                            
+                                          }
+                                          }
+            
+            
            
             
             
             
             
             
-        }
-    }
+                                      }
+                             }
    
 
 
 
 }
+
+
+
+
+
+
+
+
 
 
