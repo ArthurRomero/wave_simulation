@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <complex.h>
 #include "simulation.h"
 
 
@@ -820,7 +821,7 @@ void gp1(double z,double r0,double el0, double w0)
                         double dm = (m+n)/2;
                         double test1=0;
                         double coef2=0;
-                        
+                
                 
             
             
@@ -961,33 +962,48 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
     
     
     double el3x = el(z12+z23, r1x, el1x, w1x);//G2z - G1z + zstart + 0*zres, r1, el1, w1
-    //printf("the value of el3x is: %0.15f\n",el3x);
+    //printf("the value of el3x is: %0.15f\n",el3x);//value matches with mathematica
     
     
     double w3x = w(z12+z23,r1x,el1x,w1x);
-   printf("the value of w3x is: %0.15f\n",w3x);
+   //printf("the value of w3x is: %0.15f\n",w3x);//value matches with mathematica
     
     
     double v3x = v(z12+z23,r1x,el1x,w1x);
-   //  printf("the value of v3x is: %f\n",v3x);
+     //printf("the value of v3x is: %0.15f\n",v3x);//value matches with mathematica
     
     
     double el3y = el(z12+z23,r1y,el1y, w1y);
-   // printf("the value of el3y is: %f\n",el3y);
+   //printf("the value of el3y is: %0.15f\n",el3y);//value matches with mathematica
     
     
     double w3y = w(z12+z23,r1y,el1y,w1y);
-    // printf("the value of w3y is: %f\n",w3y);
+    //printf("the value of w3y is: %0.15f\n",w3y);//value matches with mathematica
     
     
     double v3y = v(z12+z23,r1y,el1y,w1y);
-    // printf("the value of v3x is: %f\n",v3x);
+    //printf("the value of v3x is: %f\n",v3x);//value matches with mathematica
     
     
     
     
     
     
+    
+    float ReT[41][2]={{0}};
+    for (int i=0; i<=41; i++) {
+        ReT[i][0]=i-20;
+        
+    }
+    
+    
+    
+    float ImT[41][2]={{0}};
+    for (int i=0; i<=41; i++) {
+        ImT[i][0]=i-20;
+        
+    }
+
     
     
     
@@ -1021,15 +1037,122 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
     double dm =0;
     double m=0;
     double n=0;
-    double a =0;
-    double b =0;
-    double c=0;
-    double d=0;
+    int a =0;
+    int b =0;
+    int c=0;
+    int d=0;
+    
+    
+    double test1=0;
+    
     
     
 
+    for (int i=0; i<300; i++) {
+        for (int m1=-lim; m1<lim; m1++) {
+            for (int m2=-lim; m2<lim; m2++) {
+                for (int n1=-lim; n1<lim; n1++) {
+                    for (int n2=-lim; n2<lim; n2++) {
+                    
+                    
+                        dn =n1-n2;
+                        n = (n1+n2)/2;
+                        dm = m1-m2;
+                        m = (m1+m2)/2;
+                    
+                    
+                        a = (m1+20);
+                        b = (m2+20);
+                        c = (n1+20);
+                        d = (n2+20);
+                    
+                    
+                    
+                        if (test1==1)
+                        {
+                      
+                            coef = sinc(eta1*pi*m1)+ 0*_Complex_I;
+                            coef = coef*sinc(eta1*pi*m2+ 0*_Complex_I);
+                        
+                        }
+                        else
+                        {
+                            coef = ReT[b][1]+ImT[a][1]*_Complex_I;
+                            coef = coef*((ReT[b][1]-ImT[b][1]*_Complex_I));
+                        }
+                    
+                    
+                    
+                    
+                        coef = coef*(ReT[c][1] + ImT[c][1]*_Complex_I);
+                        coef = coef*(ReT[d][1] + ImT[d][1]*_Complex_I);
+                    
+                    
+                        coef=coef*(exp(-pi*pow((dn*sin(theta)*lambda*(z23)/(d2*el3y)),2)));
+                        coef=coef*(exp(-pi*pow((lambda*z23*(dn*cos(theta)+dm*z13/z23)/(d1*el3x)),2)));
 
-    
+                    
+                    
+                        //printf("the value of coef is: %.15f %+.15fi \t %d \t %d \t %d \t %d \n",creal(coef),cimag(coef),m1,m2,n1,n2);
+                    
+                    
+                    
+                        if (((creal(coef))>=cutoff) || ((cimag(coef))>=cutoff)) {
+                        
+                      
+                            phi = dn*n*(1-z23/v3x)*pow((cos(theta)),2) + dn*n*(1-z23/v3y)*pow((sin(theta)),2) + dn*m*(1-z13/v3x)*cos(theta);
+                        
+                        
+                            phi = phi +(dm*n*(1-z13/v3x)*cos(theta) + dm*m*(z13/z23)*(1-z13/v3x));
+                        
+                            phi = phi*(2*pi*lambda*z23/(pow(d1,2)));
+                        
+                            phi = phi - (2*pi*dn*G2_x/d2);
+                            
+                            
+                            phix[i][1] = ((phi-(2*pi*(phix[i][0])/d2)*(dn*cos(theta)*(1-z23/v3x) + dm*(1-z13/v3x))));
+                        
+                            ix[i][1] = ((creal(coef)*cos(phix[i][1]) - cimag(coef)*sin(phix[i][1])*exp(-pi*pow(((phix[i][0]-(lambda*z23/d1)*(n*cos(theta)+m*z13/z23))/w3x),2))));
+                            
+                            
+                            
+                            
+                            printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        }
+                 
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    }
+                }
+            }
+        }
+    }
     
     
     
