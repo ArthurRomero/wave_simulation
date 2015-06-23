@@ -18,7 +18,7 @@
 
 
 
-
+//global variables:
 
 double e_charge = 0.00000000000000000016021765;
 double e_mass = 0.00000000000000000000000000000091093819;
@@ -29,8 +29,6 @@ double const_e = 2.71828182845905;
 double chargeratio =0;//strength of image charge(units of e (?))
 
 double lambda = 0.00000000001;
-
-
 
 double eta1 = .4;//G1 open fraction
 double eta2 = .4;//G2 open fraction
@@ -46,6 +44,8 @@ double G2_x = 0.00000005; //d/2;
 
 double theta = 0;
 
+
+//prototype functions:
 
 int x2pnts(float *A,int n);
 
@@ -112,8 +112,37 @@ int main( void )
     
     
     double zres = (zend-zstart)/zpnts;// matches with Mathematica code value
-    
     //printf("the value of zres is: %f\n",zres);
+
+    
+    
+    double w1;
+    double r1;
+    double el1;
+    double el2;
+    
+    
+    float fc;
+    float ph;
+    float ex;
+    int j;
+    
+    
+    
+    w1=w(G1_z,r0,el0,w0);//gp1
+    //printf("the value of w1 is:  %.12f\n",w1);// matches with Mathematica value of w1
+    
+    r1 = v(G1_z,r0,el0,w0);//gp1
+    //printf("the value of r1 is:  %.12f\n",r1);//matches with Mathematica value of r1
+    
+    
+    el1=el(G1_z,r0,el0,w0);//gp1
+    //printf("the value of el1 is:  %.12f\n",el1); //matches with Mathematica value of el1
+    
+    el2 = el(zstart-G1_z+zres*100, r1, el1, w1);//gp2
+    // printf("the value of el2 is:  %.12f\n",el2);// matches with mathematica value
+
+    
     
     
     float ReT[41][2]={{0}};
@@ -164,15 +193,6 @@ int main( void )
     //printf("the value of width is: %.12f \n",width);
     
 
-
-        
-        
-        
-        
-    float fc;
-    float ph;
-    float ex;
-    int j;
     
 
         for(int n=-20;n<=20;n++)
@@ -227,15 +247,7 @@ int main( void )
     }
     
    // printf("the value of ReT is: %f and j is: %d \n",ReT[j][1],j);
-    
-    
-    int TTT;
-    int n5=5;
-    
-    TTT = sizeof(ReT)/sizeof((ReT[0]));
-    
-    printf("the value of TTT is: %d \n",TTT);
-    
+
     
 
 
@@ -331,41 +343,9 @@ int main( void )
     
     
     ///////Calculating GSM parameter at first grating://///
-    
-    
-    
-    
-    
-    
-    //gp0:
-    
-    
-    double w1;
-    double r1;
-    double el1;
-    double el2;
-    double ix_;
 
     
-    w1=w(G1_z,r0,el0,w0);
-    
-    
-   //printf("the value of w1 is:  %.12f\n",w1);// matches with Mathematica value of w1
-    
- 
-    
-    r1 = v(G1_z,r0,el0,w0);
-    
-    
-    //printf("the value of r1 is:  %.12f\n",r1);//matches with Mathematica value of r1
-    
-    
-    el1=el(G1_z,r0,el0,w0);
-    
-    
-   //printf("the value of el1 is:  %.12f\n",el1); //matches with Mathematica value of el1
-    
-    //////////////////////////////////////////////////
+       //////////////////////////////////////////////////
     
     //// Range of plotting from Mathematica: x:{-200*10^-6, -170*10^-6}, y:{-10^-6, 10^-6}}
     
@@ -375,7 +355,7 @@ int main( void )
     
     
     
-    gp0(zstart+zres*1,r0,el0,w0);
+    //gp0(zstart+zres*1,r0,el0,w0);
 
     
     
@@ -394,18 +374,6 @@ int main( void )
 
     
     
-    
-    
-    
-    el2 = el(zstart-G1_z+zres*100, r1, el1, w1);
-    
-   // printf("the value of el2 is:  %.12f\n",el2);// matches with mathematica value
-    
-    for (int i=0; i<=300; i++) {
-     
-        //printf("the values of ix[i] and i are: %f\t and %d\n",ix[i][1],i);
-        continue;
-    }
     
     
     
@@ -440,29 +408,6 @@ int main( void )
 }
 
 
-
-
-
-
-
-
-//int x2pnts(float A[],int n)
-//{
-  //  double RE;
-    
-    //n=sizeof(A);
-    //for (int i=0; i<n; i++)
-    //{
-      //  if (n == A[i][0])
-        //{
-          //  RE = i;
-        //}
-   // }
-    //return(RE);
-
-    
-    
-//}
 
 
 
@@ -642,6 +587,31 @@ void gp1(double z,double r0,double el0, double w0)
     double w2;
     double r2;
    
+    long double xmin;
+    long double xmax;
+    
+    float fc;
+    float ph;
+    float ex;
+    int j;
+    
+    
+    
+    w1=w(G1_z,r0,el0,w0);
+    w2=w(z,r0,el0,w0);
+    
+    
+    r1 = v(G1_z,r0,el0,w0);
+    r2 = v(z,r0,el0,w0);
+    //printf("the values of r2 and w2 are:  %f \t %f \n",r2,w2);
+    
+    
+    el1=el(G1_z,r0,el0,w0);
+    //printf(" the values of zstart,G1_z,zres, r1,el1 and w1 are: %f \t %f \t %f \t %f \t %f \t %f\n",zstart,G1_z,zres,r1,el1,w1);
+    
+    el2 = el(z, r1, el1, w1);
+    //printf("the value of el2 is : %0.12f\n",el2);
+
     
     float ReT[41][2]={{0}};
     for (int i=0; i<=41; i++) {
@@ -658,10 +628,6 @@ void gp1(double z,double r0,double el0, double w0)
     }
 
     
-    
-    
-    long double xmin;
-    long double xmax;
     
     
     
@@ -693,11 +659,7 @@ void gp1(double z,double r0,double el0, double w0)
     }
     
     
-    
-    float fc;
-    float ph;
-    float ex;
-    int j;
+
     
     
     for(int n=-20;n<=20;n++)
@@ -727,33 +689,6 @@ void gp1(double z,double r0,double el0, double w0)
     }
     
 
-    
-    
-    
-    
-    w1=w(G1_z,r0,el0,w0);
-    w2=w(z,r0,el0,w0);
- 
-    
-    r1 = v(G1_z,r0,el0,w0);
-    r2 = v(z,r0,el0,w0);
-    
-    //printf("the values of r2 and w2 are:  %f \t %f \n",r2,w2);
-
-    
-    el1=el(G1_z,r0,el0,w0);
-    
-    //printf(" the values of zstart,G1_z,zres, r1,el1 and w1 are: %f \t %f \t %f \t %f \t %f \t %f\n",zstart,G1_z,zres,r1,el1,w1);
-
-    el2 = el(z, r1, el1, w1);
-    
-    //printf("the value of el2 is : %0.12f\n",el2);
-    
-    
-    
-    
-    
-    
     
     
    double ix[300][2]={0};
@@ -823,22 +758,6 @@ void gp1(double z,double r0,double el0, double w0)
             
                         if (coef>=cutoff) {
                             
-                
-                
-                
-                
-                
-                
-                                //coef2A = (coef*exp(-pi*pow(((ix[i][0]-dm*lambda*z/d)/w2),2)));
-                
-                                // printf("the value of coef2A is: %f\n",coef2A);
-                
-                                // coef2B = (cos(2*pi*(dn/d)*(ix[i][0]-dm*lambda*z/d)*(1-z/r2)));
-                
-                                // printf("the value of coef2B is: %f\n",coef2B);
-                
-                
-                                //coef2 = coef2A*coef2B;
                                 coef2 = (coef*exp(-pi*pow(((ix[i][0]-dm*lambda*z/d)/w2),2)*cos(2*pi*(dn/d)*(ix[i][0]-dm*lambda*z/d)*(1-z/r2))));
                          
                                 //printf("the value of coef2 is: %0.10f \t %d \t %d \t %f \t %f \n",coef2,n,m,dn,dm);//coef2 values are too low
@@ -863,7 +782,7 @@ void gp1(double z,double r0,double el0, double w0)
             
             
                                       }
-                                //printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);// the values match with mathematica values!!!
+                                        printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);//
                              }
     
    
@@ -913,24 +832,36 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
     double r1;
     double el1;
     double el2;
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     double theta = pi*mytheta/180;
     double d1=d;
     double d2=d;
     double z13 = z12+z23;
+    
+    long double xmin;
+    long double xmax;
+    
+    float fc;
+    float ph;
+    float ex;
+    int j;
+    
+    double phi =0;
+    
+    double cutoff = 0.001;
+    
+    double lim =5;
+    
+    double coef =0;
+    double dn = 0;
+    double dm =0;
+    double m=0;
+    double n=0;
+    int a =0;
+    int b =0;
+    int c=0;
+    int d=0;
+    double test1=0;
     
    // printf("the values of theta, d1,d2 and z13 are:   %0.15f \t %0.15f \t %0.15f \t %0.15f \n",theta,d1,d2,z13);// the values match with the mathematica values.
     
@@ -982,17 +913,6 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
     
     
     
-    
-    
-    
-    
-    
-    long double xmin;
-    long double xmax;
-    
-    
-    
-    
     if (beta>=0){
         
         
@@ -1019,12 +939,6 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
         
     }
     
-    
-    
-    float fc;
-    float ph;
-    float ex;
-    int j;
     
     
     for(int n=-20;n<=20;n++)
@@ -1080,26 +994,6 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
         ix[i][0]= xstart+(i-1)*((xend-xstart)/(xpnts-1));
         //printf("the values of phix[i] and i are: %f\t \t %d\n",ix[i][0],i);//different format, but same values as in the Mathematica code
     }
-    
-    double phi =0;
-    
-    double cutoff = 0.001;
-    
-    double lim =5;
-    
-    double coef =0;
-    double dn = 0;
-    double dm =0;
-    double m=0;
-    double n=0;
-    int a =0;
-    int b =0;
-    int c=0;
-    int d=0;
-    
-    
-    double test1=0;
-    
     
     
 
