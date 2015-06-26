@@ -1,8 +1,8 @@
 //
-//  x2pnts.c
+//  x2pnts_3.c
 //  
 //
-//  Created by Arthur Romero on 6/23/15.
+//  Created by Arthur Romero on 6/26/15.
 //
 //
 
@@ -12,11 +12,15 @@
 #include <string.h>
 #include <complex.h>
 
+double x2pnts(double *arr, int m, int n, int value);
 
-int x2pnts(float a[][2], int rows, int columns, int value);
 
-int main(void)
+
+
+
+int main()
 {
+    
     
     double d = 0.0000001;// period of grating
     double e_charge = 0.00000000000000000016021765;
@@ -28,7 +32,7 @@ int main(void)
     double chargeratio =0;//strength of image charge(units of e (?))
     
     double lambda = 0.00000000001;
-
+    
     double energy = (1.5*pow(10,-18)/(pow(lambda,2)));
     double width = 4*pow(10,-8); //eta2*d
     double thick = 14*pow(10,-9);
@@ -56,15 +60,10 @@ int main(void)
     double G2_x = 0.00000005; //d/2;
     
     double theta = 0;
-
+    
     
     long double xmin;
     long double xmax;
-    
-
-    
-    
-    
     
     double zstart = -0.1;
     double zend = 2.1;
@@ -73,17 +72,11 @@ int main(void)
     double ystart = -0.11*pow(10,-3);
     double yend = 0.11*pow(10,-3);
     
-    
-    
-    
     double xpnts = 300;
     double ypnts = 300;
     double zpnts = 300;
     
-    
-    
-    double zres = (zend-zstart)/zpnts;//
-    
+    double zres = (zend-zstart)/zpnts;
     
     double w1;
     double r1;
@@ -95,30 +88,20 @@ int main(void)
     float ph;
     float ex;
     int j;
-
     
-    
-    
-    float ReT[41][2]={{0}};
+    double ReT[41][2]={{0}};
     for (int i=0; i<=41; i++) {
         ReT[i][0]=i-20;
         
     }
-    
-    
-    
-    float ImT[41][2]={{0}};
+
+    double ImT[41][2]={{0}};
     for (int i=0; i<=41; i++) {
         ImT[i][0]=i-20;
         
     }
     
-    
-    
-    
     if (beta>=0){
-        
-        
         
         xmin= width*(1/res - cos(beta)/2);
         if (beta<=alpha) {
@@ -141,6 +124,11 @@ int main(void)
         }
         
     }
+    // printf("the value of xmax is: %.12Lf \n",xmax);// same value in mathematica
+    // printf("the value of xmin is: %.12Lf \n",xmin);//same value in mathematica
+    //printf("the value of p is: %.12Lf \n",p);
+    //printf("the value of width is: %.12f \n",width);
+    
     
     
     
@@ -150,8 +138,11 @@ int main(void)
         {
             fc = 2*pi*n*ex/d;
             
+            //printf("the value of fc is: %f and n is: %d and ex is %.12f \n",fc,n,ex); //same value in mathematica
             
             ph = -width*thick*chargeratio*pow(e_charge,2)*(2*pi*Coulomb/Plancks)/(vel*(.25*pow(width,2)-pow(ex,2)));
+            
+            //printf("the value of ph is: %f and n is: %d and ex is %.12f \n",ph,n,ex); //same value in mathematica
             
             
             j=n+20;
@@ -160,15 +151,28 @@ int main(void)
             ImT[j][1] += sin(ph+fc);
             
         }
-    
+        
+        
+        
+        // for(j=0;j<=41;j++){
+        
+        //ReT[j][1] += cos(ph+fc);
+        //ImT[j][1] += sin(ph+fc);
+        
+        //printf("the value of ReT is: %f and j is: %d \n",ReT[j][1],j);
+        //printf("the value of ImT is: %f and j is: %d \n",ImT[j][1],j);
+        //  }
+        
+        
         
         
     }
     
     
-    
+    // testing if the results match with methematica
     for (int i=0; i<=40; i++) {
-        
+        //  printf("value of ReT is: %f and j is: %d \n",ReT[i][1],(i-20));////same value in mathematica
+        // printf("value of ImT is: %f and j is: %d \n",ImT[i][1],(i-20));////same value in mathematica
         
         
         ReT[i][1] = ReT[i][1]/res;
@@ -179,67 +183,45 @@ int main(void)
         
     }
 
-    float index, value;
-    int rows,columns;
- 
+    int r = 41, c = 2, n = -12.0;// examples of n values//
+    double A;
+    A = x2pnts((double *)ReT, r, c,n);
     
-    value = -16;/////example of n
-    index = x2pnts(ReT, 41, 2, value);
-    int i2 = index;
-    if (index == -1)
-    {
-        printf("The value %f was not found.\n", value);
-        
-    }
-    else
-    {
-        printf("The value %f was found at %f\n", value, index);
-         printf(" the equivalent is: %f\n", ReT[i2-1][1]);
-    }
     
-    value = 13;//////example of n
-    index = x2pnts(ReT, 41,2, value);
-    int i3 = index;
-    if (index == -1)
-    {
-        printf("The value %f was not found.\n", value);
-    }
-    else
-    {
-        printf("The value %f was found at %f\n", value, index);
-        printf(" the equivalent is: %f\n", ReT[i3-1][1]);
-    }
+    printf("the value of n is: %d\n",n);
+    printf("the value of A is: %f\n", A);
     
-    value = 0;////////example of n
-    index = x2pnts(ReT, 41, 2, value);
-    int i4 = index;
-    if (index == -1)
-    {
-        printf("The value %f was not found.\n", value);
-    }
-    else
-    {
-        printf("The value %f was found at %f\n", value, index);
-        printf(" the equivalent is: %f\n", ReT[i4-1][1]);
-    }
+    
+    
+    return 0;
 }
 
-int x2pnts(float a[][2], int rows, int columns, int value)
+
+double x2pnts(double *arr, int m, int n, int value)
 {
-    int i;
-    for (i=0; i<rows; i++)
+    int i, j;
+    int arr2[41] = {0};
+    
+    double ans;
+    for (i = 0; i < m; i++)
     {
-        for (int j=0; j<columns; j++)
+        for (j = 0; j < n; j++)
         {
+            //printf("%f \n", *((arr+i*n) + j));
+            arr2[i] = *((arr+i*n) + j);
+            //printf("the values of arr2 are: %d \t %d \n", arr2[i],i);
             
-            
-            if (a[i][j] == value)
-            {
-                return(i+1);  /* it was found */
-               
+            if (arr2[i] == value) {
+                //printf("the value of i is: %d\n",i+1);
+                //printf("the equivalent for %d in ReT is the %d th element: %f\n",value,i+1, *((arr+(i)*2) + 1));
+                ans = (*((arr+(i)*2) + 1));
+                //printf("the value of ans is: %f\n", ans);
+                return(ans);
             }
         }
     }
-    return(-1);  /* if it was not found */
+    
+    
+    
 }
 

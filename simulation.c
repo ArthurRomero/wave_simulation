@@ -389,7 +389,7 @@ int main( void )
     
     
     
-    //gp2(G2_z-G1_z,zstart+0*zres,theta,el1,w1,r1,el1,w1,r1,G2_x);
+    gp2(G2_z-G1_z,zstart+0*zres,theta,el1,w1,r1,el1,w1,r1,G2_x);
     
     //printf("the values of z12,z23,theta,el1,w1,r1,and G2_x are: %f \t %f \t %0.15f \t %0.15f \t %0.15f \t %f \n",G2_z-G1_z,zstart+0*zres,theta,el1,w1,r1);
     //printf("the value of G2_x is : %0.15f \n",G2_x);
@@ -798,7 +798,7 @@ void gp1(double z,double r0,double el0, double w0)
             
             
                                       }
-                                        printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);//
+                                        //printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);//
                              }
     
    
@@ -884,28 +884,28 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
     
     
     
-    double el3x = el(z12+z23, r1x, el1x, w1x);//G2z - G1z + zstart + 0*zres, r1, el1, w1
+    double el3x = el(z13, r1x, el1x, w1x);//G2z - G1z + zstart + 0*zres, r1, el1, w1
     //printf("the value of el3x is: %0.15f\n",el3x);//value matches with mathematica
     
     
-    double w3x = w(z12+z23,r1x,el1x,w1x);
-  // printf("the value of w3x is: %0.15f\n",w3x);//value matches with mathematica
+    double w3x = w(z13,r1x,el1x,w1x);
+   //printf("the value of w3x is: %0.15f\n",w3x);//value matches with mathematica
     
     
-    double v3x = v(z12+z23,r1x,el1x,w1x);
-    // printf("the value of v3x is: %0.15f\n",v3x);//value matches with mathematica
+    double v3x = v(z13,r1x,el1x,w1x);
+     //printf("the value of v3x is: %0.15f\n",v3x);//value matches with mathematica
     
     
-    double el3y = el(z12+z23,r1y,el1y, w1y);
-  // printf("the value of el3y is: %0.15f\n",el3y);//value matches with mathematica
+    double el3y = el(z13,r1y,el1y, w1y);
+   //printf("the value of el3y is: %0.15f\n",el3y);//value matches with mathematica
     
     
-    double w3y = w(z12+z23,r1y,el1y,w1y);
+    double w3y = w(z13,r1y,el1y,w1y);
     //printf("the value of w3y is: %0.15f\n",w3y);//value matches with mathematica
     
     
-    double v3y = v(z12+z23,r1y,el1y,w1y);
-    //printf("the value of v3x is: %f\n",v3x);//value matches with mathematica
+    double v3y = v(z13,r1y,el1y,w1y);
+   // printf("the value of v3x is: %f\n",v3x);//value matches with mathematica
     
     
     
@@ -1073,24 +1073,26 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
                         if (test1==1)
                         {
                       
-                            coef = sinc(eta1*pi*m1)+ 0*_Complex_I;
-                            coef = coef*(sinc(eta1*pi*m2+ 0*_Complex_I));
+                            //coef = sinc(eta1*pi*m1)+ 0*I;
+                           // coef = coef*(sinc(eta1*pi*m2+ 0*I));
                             //printf("the value of coef is: %f \n", coef);
                         
                         }
                         else
                         {
-                            coef = ReT[a][1]+ImT[a][1]*_Complex_I;
+                            coef = ReT[a][1]+ImT[a][1]*I;
                             //printf("the value of coef and a are: %0.15f \t I:%0.15f \t %d \n", creal(coef), cimag(coef), a);
-                            coef = coef*((ReT[b][1]-ImT[b][1]*_Complex_I));
-                            //printf("the value of coef is: %0.15f \t %0.15f \n", creal(coef), cimag(coef));
+                            
+                            printf("the values of ImT[a][1] are: %f\n", )
+                            coef = coef*((ReT[b][1]-ImT[b][1]*I));
+                            //printf("the value of coef is: %0.15f \t %0.15fi \n", creal(coef), cimag(coef));
                         }
                     
                     
                     
                     
-                        coef = coef*(ReT[c][1] + ImT[c][1]*_Complex_I);
-                        coef = coef*(ReT[dd][1] + ImT[dd][1]*_Complex_I);
+                        coef = coef*(ReT[c][1] + ImT[c][1]*I);
+                        coef = coef*(ReT[dd][1] + ImT[dd][1]*I);
                         
                         //printf("the value of coef is: %f \t %f \n", creal(coef), cimag(coef));
                     
@@ -1100,7 +1102,7 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
                         //printf("the value of coef is: %f \n", coef);
                         coef=coef*(exp(-pi*pow((lambda*z23*(dn*cos(theta)+dm*z13/z23)/(d1*el3x)),2)));
                         
-                        //printf("the value of coef is: %f \t %d \t %d \t %d \t %d \n", coef,a,b,c,d);
+                        //printf("the value of coef is: %f \t %d \t %d \t %d \t %d \n", coef,a,b,c,dd);
 
                     
                     
@@ -1112,6 +1114,8 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
                         
                       
                             phi = dn*n*(1-z23/v3x)*pow((cos(theta)),2) + dn*n*(1-z23/v3y)*pow((sin(theta)),2) + dn*m*(1-z13/v3x)*cos(theta);
+                            
+                            printf("the values of phix[i][1] is: %f \t %d \n", phix[i][1], i);
                         
                         
                             phi = phi +(dm*n*(1-z13/v3x)*cos(theta) + dm*m*(z13/z23)*(1-z13/v3x));
@@ -1132,7 +1136,7 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
                             
                             
                             
-                           // printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);
+                            //printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);
                         
                         
                         
@@ -1169,7 +1173,7 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
             //printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);
         }
         
-        
+        //printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);
     }
    
     
