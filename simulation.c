@@ -1044,101 +1044,103 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
     
     
     for (int i=0; i<300; i++) {
-        ix[i][0]= xstart+(i-1)*((xend-xstart)/(xpnts-1));
-        //printf("the values of phix[i] and i are: %f\t \t %d\n",ix[i][0],i);//different format, but same values as in the Mathematica code
+        phix[i][0]= xstart+(i-1)*((xend-xstart)/(xpnts-1));
+        //printf("the values of phix[i] and i are: %f\t \t %d\n",phix[i][0],i);//different format, but same values as in the Mathematica code
     }
     
     
 
-    for (int i=0; i<300; i++) {
-        for (int m1=-lim; m1<=lim; m1++) {
-            for (int m2=-lim; m2<=lim; m2++) {
-                for (int n1=-lim; n1<=lim; n1++) {
-                    for (int n2=-lim; n2<=lim; n2++) {
+    for (int m1=-lim; m1<=lim; m1++) {
+        for (int m2=-lim; m2<=lim; m2++) {
+            for (int n1=-lim; n1<=lim; n1++) {
+                for (int n2=-lim; n2<=lim; n2++) {
                     
                     
-                        dn =n1-n2;
-                        n = (n1+n2)/2;
-                        dm = m1-m2;
-                        m = (m1+m2)/2;
+                    dn =n1-n2;
+                    n = (n1+n2)/2;
+                    dm = m1-m2;
+                    m = (m1+m2)/2;
+                
+                    
+                    a = (m1+20);
+                    b = (m2+20);
+                    c = (n1+20);
+                    dd = (n2+20);
                     
                     
-                        a = (m1+20);
-                        b = (m2+20);
-                        c = (n1+20);
-                        dd = (n2+20);
                     
-                    
-                    
-                        if (test1==1)
-                        {
+                    if (test1==1)
+                    {
                       
-                            //coef = sinc(eta1*pi*m1)+ 0*I;
-                           // coef = coef*(sinc(eta1*pi*m2+ 0*I));
-                            //printf("the value of coef is: %f \n", coef);
-                        
-                        }
-                        else
-                        {
-                            coef = ReT[a][1]+ImT[a][1]*I;
-                            //printf("the value of coef and a are: %0.15f \t I:%0.15f \t %d \n", creal(coef), cimag(coef), a);
-                            
-                            printf("the values of ImT[a][1] are: %f\n", )
-                            coef = coef*((ReT[b][1]-ImT[b][1]*I));
-                            //printf("the value of coef is: %0.15f \t %0.15fi \n", creal(coef), cimag(coef));
-                        }
-                    
-                    
-                    
-                    
-                        coef = coef*(ReT[c][1] + ImT[c][1]*I);
-                        coef = coef*(ReT[dd][1] + ImT[dd][1]*I);
-                        
-                        //printf("the value of coef is: %f \t %f \n", creal(coef), cimag(coef));
-                    
-                    
-                        coef=coef*(exp(-pi*pow(((dn*sin(theta)*lambda*(z23))/(d2*el3y)),2)));
-                        
+                        //coef = sinc(eta1*pi*m1)+ 0*I;
+                        // coef = coef*(sinc(eta1*pi*m2+ 0*I));
                         //printf("the value of coef is: %f \n", coef);
-                        coef=coef*(exp(-pi*pow((lambda*z23*(dn*cos(theta)+dm*z13/z23)/(d1*el3x)),2)));
                         
-                        //printf("the value of coef is: %f \t %d \t %d \t %d \t %d \n", coef,a,b,c,dd);
+                    }
+                    else
+                    {
+                        coef = ReT[a][1]+ImT[a][1]*I;
+                        //printf("the value of coef and a are: %0.15f \t %0.15fi \t %d \n", crealf(coef), cimagf(coef), a);
+                            
+                        coef = coef*((ReT[b][1]-ImT[b][1]*I));
+                        //printf("the value of coef is: %0.15f \t %0.15fi \n", creal(coef), cimag(coef));
+                    }
+                    
+                    
+                    
+                    
+                    coef = coef*(ReT[c][1] + ImT[c][1]*I);
+                    coef = coef*(ReT[dd][1] + ImT[dd][1]*I);
+                    
+                    //printf("the value of coef is: %f \t %f \n", creal(coef), cimag(coef));
+                    
+                    
+                    coef=coef*(exp(-pi*pow(((dn*sin(theta)*lambda*(z23))/(d2*el3y)),2)));
+                        
+                    //printf("the value of coef is: %f \n", coef);
+                    coef=coef*(exp(-pi*pow((lambda*z23*(dn*cos(theta)+dm*z13/z23)/(d1*el3x)),2)));
+                    
+                    //printf("the value of coef is: %f \t %d \t %d \t %d \t %d \n", coef,a,b,c,dd);
 
                     
                     
-                        //printf("the value of coef is: %.10f %+.10fi \t %f \t %f \n",creal(coef),cimag(coef),m,n);
+                    //printf("the value of coef is: %.10f %+.10fi \t %f \t %f \n",creal(coef),cimag(coef),m,n);
                     
                     
                     
-                        if (((creal(coef))>=cutoff) || ((cimag(coef))>=cutoff)) {
+                    if (((creal(coef))>=cutoff) || ((cimag(coef))>=cutoff)) {
                         
                       
-                            phi = dn*n*(1-z23/v3x)*pow((cos(theta)),2) + dn*n*(1-z23/v3y)*pow((sin(theta)),2) + dn*m*(1-z13/v3x)*cos(theta);
+                        phi = dn*n*(1-z23/v3x)*pow((cos(theta)),2) + dn*n*(1-z23/v3y)*pow((sin(theta)),2) + dn*m*(1-z13/v3x)*cos(theta);
                             
-                            printf("the values of phix[i][1] is: %f \t %d \n", phix[i][1], i);
+                        //printf("the values of phix[i][1] is: %f \t %d \n", phix[i][1], i);
+                        
+                    
+                        phi = phi +(dm*n*(1-z13/v3x)*cos(theta) + dm*m*(z13/z23)*(1-z13/v3x));
+                        
+                        phi = phi*(2*pi*lambda*z23/(pow(d1,2)));
+                        
+                        phi = phi - (2*pi*dn*G2_x/d2);
+                            
+                            
+                            
+                            
+                        for (int i=0; i<300; i++)
+                        {
+                        phix[i][1] = ((phi-(2*pi*(phix[i][0])/d2)*(dn*cos(theta)*(1-z23/v3x) + dm*(1-z13/v3x))));
+                            
+                            
+                        printf("the values of phix[i][1] is: %f \t %d \n", phix[i][1], i);
+                        }
                         
                         
-                            phi = phi +(dm*n*(1-z13/v3x)*cos(theta) + dm*m*(z13/z23)*(1-z13/v3x));
-                        
-                            phi = phi*(2*pi*lambda*z23/(pow(d1,2)));
-                        
-                            phi = phi - (2*pi*dn*G2_x/d2);
-                            
-                            
-                            phix[i][1] = ((phi-(2*pi*(phix[i][0])/d2)*(dn*cos(theta)*(1-z23/v3x) + dm*(1-z13/v3x))));
-                            
-                            
-                            //printf("the values of phix[i][1] is: %f \t %d \n", phix[i][1], i);
-                            
-                        
-                            ix[i][1] = ix[i][1]+((creal(coef)*cos(phix[i][1]) - cimag(coef)*sin(phix[i][1])*exp(-pi*pow(((phix[i][0]-(lambda*z23/d1)*(n*cos(theta)+m*z13/z23))/w3x),2))));
+                        for (int i=0; i<300; i++)
+                        {
+                        ix[i][1] = ix[i][1]+((creal(coef)*cos(phix[i][1]) - cimag(coef)*sin(phix[i][1])*exp(-pi*pow(((phix[i][0]-(lambda*z23/d1)*(n*cos(theta)+m*z13/z23))/w3x),2))));
                             
                             
                             
-                            
-                            //printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);
-                        
-                        
+                        //printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);
                         
                         
                         
@@ -1154,6 +1156,8 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
                         
                         
                         }
+                        
+                    }
                  
                     
                     
@@ -1167,14 +1171,14 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
                     
                     
                     
-                    }
                 }
             }
-            //printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);
         }
-        
         //printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);
     }
+        
+    //printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);
+    
    
     
 }
