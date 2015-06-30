@@ -15,7 +15,7 @@
 #include <string.h>
 #include <complex.h>
 
-double x2pnts(double *arr, int value);
+double x2pnts(double *arr, int r, int value);
 
 
 
@@ -172,7 +172,7 @@ int main()
     }
     
     
-    // testing if the results match with methematica
+    // testing if the results match with mathematica
     for (int i=0; i<=40; i++) {
         //  printf("value of ReT is: %f and j is: %d \n",ReT[i][1],(i-20));////same value in mathematica
         // printf("value of ImT is: %f and j is: %d \n",ImT[i][1],(i-20));////same value in mathematica
@@ -191,10 +191,10 @@ int main()
    
     
     int A;
-    A = x2pnts((double *)ReT,n);
+    A = x2pnts((double *)ReT,41,n);
     
     
-        printf("the value of n, its index and equivalent are and : %d ",n);
+        printf(" n, its index and result are : %d ",n);
         printf(",%d, ", A);
         printf("%f\n", ReT[A][1]);
     
@@ -206,30 +206,26 @@ int main()
 }
 
 
-double x2pnts(double *arr, int value)
+double x2pnts(double *arr, int r, int value)// put number of rows and columns as arguments?
 {
     
-    int i, j;
-    int r = 41, c = 2;
-    int arr2[41] = {0};
+    int c = 2;// put number of rows and columns as arguments of the function?
+    int arr2 = {0};
     
     double ans;
-    for (i = 0; i < r; i++)
+    for (int i = 0; i < r; i++)
     {
-        for (j = 0; j < c; j++)
-        {
-            //printf("%f \n", *((arr+i*n) + j));
-            arr2[i] = *((arr+i*c) + j);
-            //printf("the values of arr2 are: %d \t %d \n", arr2[i],i);
-            
-            if (arr2[i] == value) {
+        //printf("%f \n", *((arr+i*n) + j));
+        arr2 = *(arr+i*c);
+        //printf("the values of arr2 are: %d \t %d \n", arr2,i);
+
+        if (arr2 == value) {
                 //printf("the value of i is: %d\n",i+1);
                 //printf("the equivalent for %d in ReT is the %d th element: %f\n",value,i+1, *((arr+(i)*2) + 1));
                 ans = (*((arr+(i)*2) + 1));
                 //printf("the value of ans is: %f\n", ans);
                 return(i);
             }
-        }
     }
     
     

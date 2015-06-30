@@ -12,7 +12,7 @@
 #include <string.h>
 #include <complex.h>
 
-double x2pnts(double *arr, int value);
+double x2pnts(double *arr,int r, int value);
 
 
 
@@ -178,51 +178,53 @@ int main()
         ReT[i][1] = ReT[i][1]/res;
         ImT[i][1] = ImT[i][1]/res;
         
-        printf("value of ReT is: %f and j is: %d \n",ReT[i][1],(i-20));////same value in mathematica
+        //printf("value of ReT is: %f and j is: %d \n",ReT[i][1],(i-20));////same value in mathematica
         //printf("value of ImT is: %f and j is: %d \n",ImT[i][1],(i-20));////same value in mathematica
         
     }
 
-    int n = -12.0;// examples of n values//
+    for (int n=-5; n<5; n++)
+    {
+        
+    // examples of n values//
     double A;
-    A = x2pnts((double *)ReT,n);
+    A = x2pnts((double *)ReT,41,n);
     
     
-    printf("the value of n is: %d\n",n);
+    printf("the value of n is: %d\t",n);
     printf("the value of A is: %f\n", A);
+    }
     
     
     
     return 0;
+
 }
 
-
-double x2pnts(double *arr, int value)
+double x2pnts(double *arr, int r, int value)// put number of rows and columns as arguments?
 {
-    int i, j;
-    int r = 41, c = 2;
-    int arr2[41] = {0};
+    
+    int c = 2;// put number of rows and columns as arguments of the function?
+    int arr2 = {0};
     
     double ans;
-    for (i = 0; i < r; i++)
+    for (int i = 0; i < r; i++)
     {
-        for (j = 0; j < c; j++)
-        {
-            //printf("%f \n", *((arr+i*n) + j));
-            arr2[i] = *((arr+i*c) + j);
-            //printf("the values of arr2 are: %d \t %d \n", arr2[i],i);
-            
-            if (arr2[i] == value) {
-                //printf("the value of i is: %d\n",i+1);
-                //printf("the equivalent for %d in ReT is the %d th element: %f\n",value,i+1, *((arr+(i)*2) + 1));
-                ans = (*((arr+(i)*2) + 1));
-                //printf("the value of ans is: %f\n", ans);
-                return(ans);
-            }
+        //printf("%f \n", *((arr+i*n) + j));
+        arr2 = *(arr+i*c);
+        //printf("the values of arr2 are: %d \t %d \n", arr2,i);
+        
+        if (arr2 == value) {
+            //printf("the value of i is: %d\n",i+1);
+            //printf("the equivalent for %d in ReT is the %d th element: %f\n",value,i+1, *((arr+(i)*2) + 1));
+            ans = (*((arr+(i)*2) + 1));
+            //printf("the value of ans is: %f\n", ans);
+            return(i);
         }
     }
     
     
     
 }
+
 

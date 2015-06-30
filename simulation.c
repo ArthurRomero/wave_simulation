@@ -868,7 +868,7 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
     
     double lim =5;
     
-    double coef =0;
+    double complex coef =0;
     double dn = 0;
     double dm =0;
     double m=0;
@@ -1083,10 +1083,10 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
                         
                         coef = ReT[a][1]+ImT[a][1]*I;
                         //printf("the value of coef and a are: %0.15f \t %0.15fi \t %d \n", crealf(coef), cimagf(coef), a);
-                        printf("the value of coef and a are:%0.15f \t %0.15fi \t %d \n", cimagf(coef),ImT[a][1], a);
+                        //printf("the value of coef and a are:%0.15f \t %0.15fi \t %d \n", cimagf(coef),ImT[a][1], a);
                             
                         coef = coef*((ReT[b][1]-ImT[b][1]*I));
-                       // printf("the value of coef is: %0.15f \t %0.15fi \n", creal(coef), cimag(coef));
+                        //printf("the value of coef is: %0.15f \t %0.15fi \t %d \n", creal(coef), cimag(coef), b);
                     }
                     
                     
@@ -1095,7 +1095,7 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
                     coef = coef*(ReT[c][1] + ImT[c][1]*I);
                     coef = coef*(ReT[dd][1] + ImT[dd][1]*I);
                     
-                    //printf("the value of coef is: %f \t %f \n", creal(coef), cimag(coef));
+                    printf("the value of coef is: %f \t %f \n", creal(coef), cimag(coef));
                     
                     
                     coef=coef*(cexp(-pi*cpow(((dn*csin(theta)*lambda*(z23))/(d2*el3y)),2)));
