@@ -12,7 +12,7 @@
 #include <string.h>
 #include <complex.h>
 
-double x2pnts(double *arr, int m, int n, int value);
+double x2pnts(double *arr, int value);
 
 
 
@@ -183,9 +183,9 @@ int main()
         
     }
 
-    int r = 41, c = 2, n = -12.0;// examples of n values//
+    int n = -12.0;// examples of n values//
     double A;
-    A = x2pnts((double *)ReT, r, c,n);
+    A = x2pnts((double *)ReT,n);
     
     
     printf("the value of n is: %d\n",n);
@@ -197,18 +197,19 @@ int main()
 }
 
 
-double x2pnts(double *arr, int m, int n, int value)
+double x2pnts(double *arr, int value)
 {
     int i, j;
+    int r = 41, c = 2;
     int arr2[41] = {0};
     
     double ans;
-    for (i = 0; i < m; i++)
+    for (i = 0; i < r; i++)
     {
-        for (j = 0; j < n; j++)
+        for (j = 0; j < c; j++)
         {
             //printf("%f \n", *((arr+i*n) + j));
-            arr2[i] = *((arr+i*n) + j);
+            arr2[i] = *((arr+i*c) + j);
             //printf("the values of arr2 are: %d \t %d \n", arr2[i],i);
             
             if (arr2[i] == value) {

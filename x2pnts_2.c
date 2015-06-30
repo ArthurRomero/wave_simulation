@@ -194,8 +194,8 @@ int main()
     A = x2pnts((double *)ReT,n);
     
     
-        printf("the value of n is: %d ",n);
-        printf(",%d ", A);
+        printf("the value of n, its index and equivalent are and : %d ",n);
+        printf(",%d, ", A);
         printf("%f\n", ReT[A][1]);
     
     

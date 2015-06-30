@@ -1080,10 +1080,10 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
                     else
                     {
                         
-                        double k=ImT[a][1];
-                        coef = ReT[a][1]+k*I;
+                        
+                        coef = ReT[a][1]+ImT[a][1]*I;
                         //printf("the value of coef and a are: %0.15f \t %0.15fi \t %d \n", crealf(coef), cimagf(coef), a);
-                        printf("the value of coef and a aredd:%0.15f \t %0.15fi \t %d \n", cimagf(coef),k, a);
+                        printf("the value of coef and a are:%0.15f \t %0.15fi \t %d \n", cimagf(coef),ImT[a][1], a);
                             
                         coef = coef*((ReT[b][1]-ImT[b][1]*I));
                        // printf("the value of coef is: %0.15f \t %0.15fi \n", creal(coef), cimag(coef));
