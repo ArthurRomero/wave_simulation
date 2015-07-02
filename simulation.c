@@ -371,7 +371,7 @@ int main( void )
     
     
     
-    // gp1(zstart - G1_z + zres*100,r1,el1,w1);
+     gp1(zstart - G1_z + zres*100,r1,el1,w1);
     
     
     
@@ -389,10 +389,10 @@ int main( void )
     
     //int i=4;
     
-    FILE *out_file = fopen("ploting_gp2.xls","w+");
+   
     
     
-    gp2(G2_z-G1_z,zstart+0*zres,theta,el1,w1,r1,el1,w1,r1,G2_x);
+    //gp2(G2_z-G1_z,zstart+0*zres,theta,el1,w1,r1,el1,w1,r1,G2_x);
     
     //printf("the values of z12,z23,theta,el1,w1,r1,and G2_x are: %f \t %f \t %0.15f \t %0.15f \t %0.15f \t %f \n",G2_z-G1_z,zstart+0*zres,theta,el1,w1,r1);
     //printf("the value of G2_x is : %0.15f \n",G2_x);
@@ -627,7 +627,7 @@ void gp1(double z,double r0,double el0, double w0)
     float ph;
     float ex;
     int j;
-    
+     FILE *out_file1 = fopen("ploting_gp1.xls","w+");
     
     
     w1=w(G1_z,r0,el0,w0);
@@ -815,7 +815,8 @@ void gp1(double z,double r0,double el0, double w0)
             
             
         }
-         //printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);//
+         printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);//
+         fprintf(out_file1, "%.19f\t%.19f\n", ix[i][0], ix[i][1]);
     }
     
     
@@ -896,7 +897,7 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
     int d5=0;
     double test1=0;
     
-    FILE *out_file = fopen("ploting_gp2.xls","w+");
+    FILE *out_file2 = fopen("ploting_gp2.xls","w+");
     
     
     // printf("the values of theta, d1,d2 and z13 are:   %0.15f \t %0.15f \t %0.15f \t %0.15f \n",theta,d1,d2,z13);// the values match with the mathematica values.
@@ -1192,7 +1193,7 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
             
             }
         printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);// the results match with mathematica's!!
-        fprintf(out_file, "%.19f\t%.19f\n", ix[i][0], ix[i][1]);
+        fprintf(out_file2, "%.19f\t%.19f\n", ix[i][0], ix[i][1]);
         }
     
     
