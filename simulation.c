@@ -387,9 +387,9 @@ int main( void )
     
     
     
+    //int i=4;
     
-    
-    
+    FILE *out_file = fopen("ploting_gp2.xls","w+");
     
     
     gp2(G2_z-G1_z,zstart+0*zres,theta,el1,w1,r1,el1,w1,r1,G2_x);
@@ -400,6 +400,12 @@ int main( void )
     // input values are the same.
     
     
+    //for (int i = 0; i < 300; i++) {
+    //fprintf(out_file, "%.3f\t%.5f\n", ix[i][0], ix[i][1]);
+
+            //}
+    
+    return 0;
     
     
     
@@ -890,6 +896,8 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
     int d5=0;
     double test1=0;
     
+    FILE *out_file = fopen("ploting_gp2.xls","w+");
+    
     
     // printf("the values of theta, d1,d2 and z13 are:   %0.15f \t %0.15f \t %0.15f \t %0.15f \n",theta,d1,d2,z13);// the values match with the mathematica values.
     
@@ -1153,41 +1161,14 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
                             
                             
                             // printf("the values of phix[i][1] is: %f \t %d \n", phix[i][1], i);//values apparently are the same as in mathematica
-                            double testt;
-                            double testt1;
-                            double testt2;
+                           
                             
                             
                             
-                            //testt1 =crealf(coef)*ccosf(phix[i][1]);
-                            
-                            testt = (((crealf(coef)*ccosf(phix[i][1]) - cimagf(coef)*csinf(phix[i][1]))*cexpf(-pi*cpowf(((phix[i][0]-(lambda*z23/d1)*(n*ccosf(theta)+m*z13/z23))/w3x),2))));
-                            
-                            //testt2=- cimagf(coef)*csinf(phix[i][1])*cexpf(-pi*cpowf(((phix[i][0]-(lambda*z23/d1)*(n*ccosf(theta)+m*z13/z23))/w3x),2));
+                            ix[i][1] = ix[i][1] + (((crealf(coef)*ccosf(phix[i][1]) - cimagf(coef)*csinf(phix[i][1]))*cexpf(-pi*cpowf(((phix[i][0]-(lambda*z23/d1)*(n*ccosf(theta)+m*z13/z23))/w3x),2))));
                             
                             
-                            
-                            //testt = testt1 + testt2;
-                            
-                            //printf("the values of testt1 and testt2 are: %f \t %f \t %d \n",testt1,testt2, i);
-                           // printf("the values of testt are: %f\n",testt);
-                            
-                            ix[i][1] = ix[i][1] + testt;
-                            
-                                // printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
+
                             
                             }
                         
@@ -1211,7 +1192,7 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
             
             }
         printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);// the results match with mathematica's!!
-        
+        fprintf(out_file, "%.19f\t%.19f\n", ix[i][0], ix[i][1]);
         }
     
     
