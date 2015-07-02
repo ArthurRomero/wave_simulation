@@ -44,7 +44,7 @@ double G2_x = 0.00000005; //d/2;
 
 double theta = 0;
 
-int r =41;
+int r =41;// length of the array.
 
 
 //prototype functions:
@@ -1159,17 +1159,17 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
                             
                             
                             
-                            testt1 =crealf(coef)*ccosf(phix[i][1]);
+                            //testt1 =crealf(coef)*ccosf(phix[i][1]);
                             
-                            //testt = ((crealf(coef)*ccosf(phix[i][1]) - cimagf(coef)*csinf(phix[i][1])*cexpf(-pi*cpowf(((phix[i][0]-(lambda*z23/d1)*(n*ccosf(theta)+m*z13/z23))/w3x),2))));
+                            testt = (((crealf(coef)*ccosf(phix[i][1]) - cimagf(coef)*csinf(phix[i][1]))*cexpf(-pi*cpowf(((phix[i][0]-(lambda*z23/d1)*(n*ccosf(theta)+m*z13/z23))/w3x),2))));
                             
-                            testt2=- cimagf(coef)*csinf(phix[i][1])*cexpf(-pi*cpowf(((phix[i][0]-(lambda*z23/d1)*(n*ccosf(theta)+m*z13/z23))/w3x),2));
+                            //testt2=- cimagf(coef)*csinf(phix[i][1])*cexpf(-pi*cpowf(((phix[i][0]-(lambda*z23/d1)*(n*ccosf(theta)+m*z13/z23))/w3x),2));
                             
                             
                             
-                            testt = testt1 + testt2;
+                            //testt = testt1 + testt2;
                             
-                            printf("the values of testt1 and testt2 are: %f \t %f \t %d \n",testt1,testt2, i);
+                            //printf("the values of testt1 and testt2 are: %f \t %f \t %d \n",testt1,testt2, i);
                            // printf("the values of testt are: %f\n",testt);
                             
                             ix[i][1] = ix[i][1] + testt;
@@ -1210,7 +1210,8 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
                 }
             
             }
-        //printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);
+        printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);// the results match with mathematica's!!
+        
         }
     
     
