@@ -46,7 +46,24 @@ double theta = 0;
 
 int r =41;// length of the array.
 
+double energy = 15000;
+double width = 0.00000004;
+double thick = 0.000000014;
+double wedgeangle = 0;
+double tilt =0;
 
+double res = 1000;
+
+double zstart = -0.1;
+double zend = 2.1;
+double xstart = -0.00020;
+double xend = 0.00020;
+double ystart = -0.00011;
+double yend = 0.00011;
+
+double xpnts = 300;
+double ypnts = 300;
+double zpnts = 300;
 //prototype functions:
 
 
@@ -70,47 +87,27 @@ void gp1(double z,double r0,double el0, double w0);//prototype
 
 void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double r1x, double el1y, double w1y, double r1y, double G2_x);//prototype
 
-int x2pnts(float *arr, int r, int value);//
+int x2pnts(float *arr, int r, int value);//prototype
 
 
 int main( void )
 {
-    double lam = pow((150)/(4000),1/2)*pow(10,-10);// 1.936E-10//
+    double lam = pow((150)/(4000),1/2)*pow(10,-10);// double lam = 1.936E-10//
     
     ///////////Fourier Components Variables//////////
     
-    double energy = (1.5*pow(10,-18)/(pow(lambda,2)));
-    double width = 4*pow(10,-8); //eta2*d
-    double thick = 14*pow(10,-9);
-    double wedgeangle = 0;
-    double tilt =0;
-    
-    
-    double res = 1000;
+    double res = 1000;// double res = 1000;
     double eta = width/d;
     double vel = pow(2*energy*e_charge/e_mass,1/2);
     double alpha = wedgeangle*pi/180;
     double beta = tilt*pi;// since tilt=0, beta=0.
     
+    
+    
+    
+    
     long double xmin;
     long double xmax;
-    
-    
-    
-    
-    double zstart = -0.1;
-    double zend = 2.1;
-    double xstart = -200*pow(10,-6);
-    double xend = 200*pow(10,-6);
-    double ystart = -0.11*pow(10,-3);
-    double yend = 0.11*pow(10,-3);
-    
-    
-    
-    
-    double xpnts = 300;
-    double ypnts = 300;
-    double zpnts = 300;
     
     
     
@@ -148,7 +145,7 @@ int main( void )
     
     
     
-    float ReT[41][2]={{0}};
+    float ReT[41][2]={{0}}; //Real Transpose
     for (int i=0; i<=41; i++) {
         ReT[i][0]=i-20;
         
@@ -156,7 +153,7 @@ int main( void )
     
     
     
-    float ImT[41][2]={{0}};
+    float ImT[41][2]={{0}};//Imaginary Transpose
     for (int i=0; i<=41; i++) {
         ImT[i][0]=i-20;
         
@@ -350,8 +347,6 @@ int main( void )
     
     //////////////////////////////////////////////////
     
-    //// Range of plotting from Mathematica: x:{-200*10^-6, -170*10^-6}, y:{-10^-6, 10^-6}}
-    
     
     //gp0:
     
@@ -371,7 +366,7 @@ int main( void )
     
     
     
-     gp1(zstart - G1_z + zres*100,r1,el1,w1);
+    gp1(zstart - G1_z + zres*100,r1,el1,w1);
     
     
     
@@ -387,23 +382,18 @@ int main( void )
     
     
     
-    //int i=4;
+ 
     
    
     
     
-    //gp2(G2_z-G1_z,zstart+0*zres,theta,el1,w1,r1,el1,w1,r1,G2_x);
+   gp2(G2_z-G1_z,zstart+0*zres,theta,el1,w1,r1,el1,w1,r1,G2_x);
     
     //printf("the values of z12,z23,theta,el1,w1,r1,and G2_x are: %f \t %f \t %0.15f \t %0.15f \t %0.15f \t %f \n",G2_z-G1_z,zstart+0*zres,theta,el1,w1,r1);
     //printf("the value of G2_x is : %0.15f \n",G2_x);
     
     // input values are the same.
-    
-    
-    //for (int i = 0; i < 300; i++) {
-    //fprintf(out_file, "%.3f\t%.5f\n", ix[i][0], ix[i][1]);
 
-            //}
     
     return 0;
     
@@ -430,7 +420,6 @@ double w(double z,double r0, double el0, double w0)
 {
     
     double w;
-    double lambda = 0.00000000001;
     double test4;
     double test5;
     double test6;
@@ -448,7 +437,6 @@ double el(double z,double r0, double el0, double w0)
 {
     
     double w;
-    double lambda = 0.00000000001;
     
     double test4;
     double test5;
@@ -484,7 +472,6 @@ double v(double z,double r0, double el0, double w0)
     
     double v;
     
-    double lambda = 0.00000000001;
     
     v=(z)/(1-zp(z,r0)/(z*(1+pow(((lambda*zp(z,r0)/(el0*w0))),2))));
     
@@ -514,7 +501,7 @@ double sinc(double x)
 int x2pnts(float *arr, int r, int value)// put number of rows and columns as arguments?
 {
     
-    int c = 2;// put number of rows and columns as arguments of the function?
+    int c = 2;
     int arr2 = {0};
     
     int ans;
@@ -543,22 +530,7 @@ int x2pnts(float *arr, int r, int value)// put number of rows and columns as arg
 void gp0 (double z,double r0,double el0, double w0)
 {
     double w1;
-    //    double pi = 3.14159265;
     double ix[300][2]={0};
-    double zstart = -0.1;
-    double zend = 2.1;
-    double xstart = -200*pow(10,-6);
-    double xend = 200*pow(10,-6);
-    double ystart = -0.11*pow(10,-3);
-    double yend = 0.11*pow(10,-3);
-    
-    
-    
-    
-    double xpnts = 300;
-    double ypnts = 300;
-    double zpnts = 300;
-    
     
     
     for (int i=0; i<300; i++) {
@@ -584,13 +556,7 @@ void gp1(double z,double r0,double el0, double w0)
     
     
     
-    double energy = (1.5*pow(10,-18)/(pow(lambda,2)));
-    double width = 4*pow(10,-8); //eta2*d
-    double thick = 14*pow(10,-9);
-    double wedgeangle = 0;
-    double tilt =0;
-    double theta = 0;
-    double res = 1000;
+    
     double eta = width/d;
     double vel = pow(2*energy*e_charge/e_mass,1/2);
     double alpha = wedgeangle*pi/180;
@@ -600,19 +566,7 @@ void gp1(double z,double r0,double el0, double w0)
     double el1;
     double el2;
     
-    
-    double xpnts = 300;
-    double ypnts = 300;
-    double zpnts = 300;
-    
-    double pi = 3.14159265;
-    
-    double zstart = -0.1;
-    double zend = 2.1;
-    double xstart = -200*pow(10,-6);
-    double xend = 200*pow(10,-6);
-    double ystart = -0.11*pow(10,-3);
-    double yend = 0.11*pow(10,-3);
+  
     double zres = (zend-zstart)/zpnts;
     
     
@@ -791,12 +745,12 @@ void gp1(double z,double r0,double el0, double w0)
                 
                 if (coef>=cutoff) {
                     
-                    coef2 = (coef*exp(-pi*pow(((ix[i][0]-dm*lambda*z/d)/w2),2)*cos(2*pi*(dn/d)*(ix[i][0]-dm*lambda*z/d)*(1-z/r2))));
+                    ix[i][1] = ix[i][1] +  (coef*exp(-pi*pow(((ix[i][0]-dm*lambda*z/d)/w2),2)*cos(2*pi*(dn/d)*(ix[i][0]-dm*lambda*z/d)*(1-z/r2))));
                     
                     //printf("the value of coef2 is: %0.10f \t %d \t %d \t %f \t %f \n",coef2,n,m,dn,dm);//coef2 values are too low
                     
                     
-                    ix[i][1] = ix[i][1] + coef2;
+                    //ix[i][1] = ix[i][1] + coef2;
                     
                     
                     
@@ -816,7 +770,7 @@ void gp1(double z,double r0,double el0, double w0)
             
         }
          printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);//
-         fprintf(out_file1, "%.19f\t%.19f\n", ix[i][0], ix[i][1]);
+         fprintf(out_file1, "%.19f\t%.19f\t%d\n", ix[i][0], ix[i][1],i);
     }
     
     
@@ -836,27 +790,7 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
     
     
     
-    
-    double zstart = -0.1;
-    double zend = 2.1;
-    double xstart = -200*pow(10,-6);
-    double xend = 200*pow(10,-6);
-    double ystart = -0.11*pow(10,-3);
-    double yend = 0.11*pow(10,-3);
-    
-    
-    
-    
-    double xpnts = 300;
-    double ypnts = 300;
-    double zpnts = 300;
-    
-    
-    double energy = (1.5*pow(10,-18)/(pow(lambda,2)));
-    double width = 4*pow(10,-8); //eta2*d
-    double thick = 14*pow(10,-9);
-    double wedgeangle = 0;
-    double tilt =0;
+  
     double res = 1000;
     double eta = width/d;
     double vel = pow(2*energy*e_charge/e_mass,1/2);
@@ -878,7 +812,7 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
     float fc;
     float ph;
     float ex;
-    int j;
+    
     
     double phi =0;
     
@@ -905,7 +839,7 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
     
     
     double el3x = el(z13, r1x, el1x, w1x);//G2z - G1z + zstart + 0*zres, r1, el1, w1
-    //printf("the value of el3x is: %0.15f\n",el3x);//value matches with mathematica
+   // printf("the value of el3x is: %0.15f\n",el3x);//value matches with mathematica
     
     
     double w3x = w(z13,r1x,el1x,w1x);
@@ -913,19 +847,19 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
     
     
     double v3x = v(z13,r1x,el1x,w1x);
-    //printf("the value of v3x is: %0.15f\n",v3x);//value matches with mathematica
+   // printf("the value of v3x is: %0.15f\n",v3x);//value matches with mathematica
     
     
     double el3y = el(z13,r1y,el1y, w1y);
-    //printf("the value of el3y is: %0.15f\n",el3y);//value matches with mathematica
+   // printf("the value of el3y is: %0.15f\n",el3y);//value matches with mathematica
     
     
     double w3y = w(z13,r1y,el1y,w1y);
-    //printf("the value of w3y is: %0.15f\n",w3y);//value matches with mathematica
+   // printf("the value of w3y is: %0.15f\n",w3y);//value matches with mathematica
     
     
     double v3y = v(z13,r1y,el1y,w1y);
-     //printf("the value of v3x is: %f\n",v3x);//value matches with mathematica
+    //printf("the value of v3x is: %f\n",v3x);//value matches with mathematica
     
     
     
@@ -948,14 +882,7 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
         //printf("value of ImT is: %f and j is: %d \n",ImT[i][1],(i-20)); ok
         
     }
-    
-    
-    
-    
-    
-    
-    
-    
+
     
     
     if (beta>=0){
@@ -984,7 +911,7 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
         
     }
     //printf("the value of xmax is: %.12Lf \n",xmax);// same value in mathematica
-    // printf("the value of xmin is: %.12Lf \n",xmin);//same value in mathematica
+     //printf("the value of xmin is: %.12Lf \n",xmin);//same value in mathematica
     
     //printf("the value of width is: %.12f \n",width);
     
@@ -1001,13 +928,13 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
             
             ph = -width*thick*chargeratio*pow(e_charge,2)*(2*pi*Coulomb/Plancks)/(vel*(.25*pow(width,2)-pow(ex,2)));
             
-            //printf("the value of ph is: %f and n is: %d and ex is %.12f \n",ph,n,ex); //same value in mathematica
+           // printf("the value of ph is: %f and n is: %d and ex is %.12f \n",ph,n,ex); //same value in mathematica
             
             
-            j=n+20;
             
-            ReT[j][1] += cos(ph+fc);
-            ImT[j][1] += sin(ph+fc);
+            
+            ReT[x2pnts((float *)ReT, r, n)][1] += cos(ph+fc);
+            ImT[x2pnts((float *)ReT, r, n)][1] += sin(ph+fc);
             
         }
         
@@ -1037,12 +964,12 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
         ReT[i][1] = ReT[i][1]/res;
         ImT[i][1] = ImT[i][1]/res;
         
-        //printf("value of ReT is: %f and j is: %d \n",ReT[i][1],(i-20));////same value in mathematica
-        //printf("value of ImT is: %f and j is: %d \n",ImT[i][1],(i-20));////same value in mathematica
+        //printf("value of ReT is: %0.10f and j is: %d \n",ReT[i][1],(i-20));////same value in mathematica
+        //printf("value of ImT is: %0.10f and j is: %d \n",ImT[i][1],(i-20));////same value in mathematica
         
     }
     
-    // printf("the value of ReT is: %f and j is: %d \n",ReT[j][1],j);
+     //printf("the value of ReT is: %f and j is: %d \n",ReT[j][1],j);
     
     
     
@@ -1056,7 +983,7 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
     
     for (int i=0; i<300; i++) {
         ix[i][0]= xstart+(i-1)*((xend-xstart)/(xpnts-1));
-        // printf("the values of ix[i] and i are: %f\t \t %d\n",ix[i][0],i);//different format, but same values as in the Mathematica code
+         //printf("the values of ix[i] and i are: %f\t \t %d\n",ix[i][0],i);//different format, but same values as in the Mathematica code
     }
     
     
@@ -1077,9 +1004,9 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
                     
                     
                         dn =n1-n2;
-                        n = (n1+n2)/2;
+                        n = ((double)(n1+n2))/2;
                         dm = m1-m2;
-                        m = (m1+m2)/2;
+                        m = ((double)(m1+m2))/2;
                     
                     
                         a = (x2pnts((float *)ReT, r, m1));
@@ -1128,7 +1055,7 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
                     
                         coef=coef*(cexp(-pi*cpow((lambda*z23*(dn*ccos(theta)+dm*z13/z23)/(d1*el3x)),2)));
                     
-                        //printf("the value of coef is: %0.10f \t %0.10fi \n", crealf(coef), cimagf(coef));// results match with mathematica's!
+                        //printf("the value of coef is: %0.19f \t %0.19fi \n", crealf(coef), cimagf(coef));// results match with mathematica's!
                     
                     
                     
@@ -1140,16 +1067,16 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
                         if (((creal(coef))>=cutoff) || ((cimag(coef))>=cutoff)) {
                             //printf("the value of coef is: %0.10f \t %0.10fi \n", crealf(coef), cimagf(coef));//results match with mathematica's!
                         
-                            phi = dn*n*(1-z23/v3x)*cpowf((ccos(theta)),2) + dn*n*(1-z23/v3y)*cpowf((csin(theta)),2) + dn*m*(1-z13/v3x)*ccosf(theta);
+                            phi = dn*n*(1-z23/v3x)*pow((cos(theta)),2) + dn*n*(1-z23/v3y)*pow((sin(theta)),2) + dn*m*(1-z13/v3x)*cos(theta);
                             //phi = dn*n*(1-z23/v3x)+ dn*m*(1-z13/v3x)*cos(theta);
                         
                             //printf("the values of phi is: %f \n", phi);
                         
                         
-                            phi = phi +(dm*n*(1-z13/v3x)*ccosf(theta) + dm*m*(z13/z23)*(1-z13/v3x));
+                            phi = phi +(dm*n*(1-z13/v3x)*cos(theta) + dm*m*(z13/z23)*(1-z13/v3x));
                             //printf("the values of phi is: %f \n", phi);
                         
-                            phi = phi*(2*pi*lambda*z23/(cpowf(d1,2)));
+                            phi = phi*(2*pi*lambda*z23/(pow(d1,2)));
                             //printf("the values of phi is: %f \n", phi);
                         
                             phi = phi - (2*pi*dn*G2_x/d2);
@@ -1158,15 +1085,15 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
                         
                         
                        
-                                phix[i][1] = ((phi-(2*pi*(phix[i][0])/d2)*(dn*ccosf(theta)*(1-z23/v3x) + dm*(1-z13/v3x))));
+                                phix[i][1] = ((phi-(2*pi*(phix[i][0])/d2)*(dn*cos(theta)*(1-z23/v3x) + dm*(1-z13/v3x))));
                             
                             
-                            // printf("the values of phix[i][1] is: %f \t %d \n", phix[i][1], i);//values apparently are the same as in mathematica
+                             //printf("the values of phix[i][1] is: %f \t %d \n", phix[i][1], i);//values apparently are the same as in mathematica(zeros)
                            
                             
                             
                             
-                            ix[i][1] = ix[i][1] + (((crealf(coef)*ccosf(phix[i][1]) - cimagf(coef)*csinf(phix[i][1]))*cexpf(-pi*cpowf(((phix[i][0]-(lambda*z23/d1)*(n*ccosf(theta)+m*z13/z23))/w3x),2))));
+                            ix[i][1] = ix[i][1] + (((creal(coef)*cos(phix[i][1]) - cimag(coef)*sin(phix[i][1]))*exp(-pi*pow(((phix[i][0]-(lambda*z23/d1)*(n*cos(theta)+m*(z13/z23)))/w3x),2))));
                             
                             
 
@@ -1194,6 +1121,7 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
             }
         printf("the values of ix[i][1] are:  %0.19f \t %d \n",ix[i][1],i);// the results match with mathematica's!!
         fprintf(out_file2, "%.19f\t%.19f\n", ix[i][0], ix[i][1]);
+       
         }
     
     
