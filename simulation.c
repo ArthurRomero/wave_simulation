@@ -366,7 +366,7 @@ int main( void )
     
     
     
-    gp1(zstart - G1_z + zres*100,r1,el1,w1);
+    //gp1(zstart - G1_z + zres*100,r1,el1,w1);
     
     
     
