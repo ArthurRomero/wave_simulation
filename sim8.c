@@ -5,16 +5,17 @@
 //  Created by Arthur Romero on 7/10/15.
 //
 //
-
-#include <math.h>
+#import <stdio.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <complex.h>
+#include <math.h>
+
+#include "TCanvas.h"
+#include "TGraph.h"
+#include "TApplication.h"
+#include "TROOT.h"
 
 
-
-
+#include "SimplePlot.hh"
 
 
 //global variables:
@@ -80,12 +81,7 @@ double v(double z,double r0, double el0, double w0);// prototype
 double sinc(double x);//prototype
 
 
-
-void gp0(double z,double r0,double el0, double w0);//prototype
-
-double * gp1(double z,double r0,double el0, double w0);//prototype
-
-void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double r1x, double el1y, double w1y, double r1y, double G2_x);//prototype
+void gp1(double z,double r0,double el0, double w0);//prototype
 
 int x2pnts(float *arr, int r, int value);//prototype
 
@@ -101,7 +97,7 @@ int x2pnts(float *arr, int r, int value);//prototype
 
 
 
-int main( int argc, char *argv[] )
+int main( )
 {
     double lam = pow((150)/(4000),1/2)*pow(10,-10);// double lam = 1.936E-10//
     
@@ -131,7 +127,7 @@ int main( int argc, char *argv[] )
     double r1;
     double el1;
     double el2;
-    
+    double *x1;
     
 
     
@@ -147,30 +143,20 @@ int main( int argc, char *argv[] )
     //printf("the value of el1 is:  %.12f\n",el1); //matches with Mathematica value of el1
     
     el2 = el(zstart-G1_z+zres*100, r1, el1, w1);//gp2
-    // printf("the value of el2 is:  %.12f\n",el2);// matches with mathematica value
+     //printf("the value of el2 is:  %.12f\n",el2);// matches with mathematica value
     
     
+     gp1(zstart - G1_z + zres*100,r1,el1,w1);
+    // printf("the value of el2 is:  %.12f\n",el2);
     
     
-    
-    double *x1;
-    x1 = gp1(zstart - G1_z + zres*100,r1,el1,w1);
-    
-    
-    for (int i=0; i<300; i++) {
-         printf("*(x + [%d]) : %f\n", i, (*((x1+(i)*2) + 1)) );
-    }
-    
-    printf("test");
     
     
 
     
-    return 0;
-    
-    
     
 }
+
 
 
 
@@ -300,28 +286,9 @@ int x2pnts(float *arr, int r, int value)// put number of rows and columns as arg
 
 
 
-void gp0 (double z,double r0,double el0, double w0)
-{
-    double w1;
-    double ix[300][2]={0};
-    
-    
-    for (int i=0; i<300; i++) {
-        ix[i][0]= xstart+(i-1)*((xend-xstart)/(xpnts-1));
-        ix[i][1]=exp(-pi*pow((ix[i][0]/w1),2));
-        //printf("the values of ix[i] and i are: %f\t and %d\n",ix[i][1],i);//
-        
-    }
-    
-    
-}
 
 
-
-
-
-
-double * gp1(double z,double r0,double el0, double w0)
+void gp1(double z,double r0,double el0, double w0)
 {
     double coef;
     double cutoff=pow(10,-3);
@@ -546,9 +513,28 @@ double * gp1(double z,double r0,double el0, double w0)
        
     }
     
-    return ix;
+    
+    double ix1[300]={0};
+    double ix2[300]={0};
     
     
+    
+    for (int i=0; i<300; i++) {
+        for (int j=0; j<2; j++) {
+            if (j==0) {
+                ix1[i]=ix[i][j];
+            }
+            if (j==1) {
+                ix2[i] = ix[i][j];
+            }
+        }
+    }
+    
+    
+    SimplePlot::graph("gp1 graph",ix1,ix2,300);
+    
+
+   
     
 }
 

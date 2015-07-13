@@ -366,7 +366,7 @@ int main( void )
     
     
     
-    //gp1(zstart - G1_z + zres*100,r1,el1,w1);
+    gp1(zstart - G1_z + zres*100,r1,el1,w1);
     
     
     
@@ -387,7 +387,7 @@ int main( void )
    
     
     
-   gp2(G2_z-G1_z,zstart+0*zres,theta,el1,w1,r1,el1,w1,r1,G2_x);
+   //gp2(G2_z-G1_z,zstart+0*zres,theta,el1,w1,r1,el1,w1,r1,G2_x);
     
     //printf("the values of z12,z23,theta,el1,w1,r1,and G2_x are: %f \t %f \t %0.15f \t %0.15f \t %0.15f \t %f \n",G2_z-G1_z,zstart+0*zres,theta,el1,w1,r1);
     //printf("the value of G2_x is : %0.15f \n",G2_x);
