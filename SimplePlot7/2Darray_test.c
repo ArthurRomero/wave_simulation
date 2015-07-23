@@ -88,19 +88,19 @@ int main()
     double alpha = wedgeangle*pi/180;
     double beta = tilt*pi;// since tilt=0, beta=0.
     
+    int r=300;
+    int c=2;
+    double ix[300][2]={{0}};
     
+   
     
-    
-    
-    long double xmin;
-    long double xmax;
-    
+    double max =0;
     
     
     double zres = (zend-zstart)/zpnts;// matches with Mathematica code value
     //printf("the value of zres is: %f\n",zres);
     
-
+    
     
     double w1=w(G1_z,r0,el0,w0);//gp1
     //printf("the value of w1 is:  %.12f\n",w1);// matches with Mathematica value of w1
@@ -114,11 +114,6 @@ int main()
     
     double el2 = el(zstart-G1_z+zres*100, r1, el1, w1);//gp2
     //printf("the value of el2 is:  %.12f\n",el2);// matches with mathematica value
-    
-    int r=300;
-    int c=2;
-    double ix[300][2]={{0}};
-    
     
     
     
@@ -135,25 +130,54 @@ int main()
                 izx[k][j]=0;
             }
         }
-
-        double zloc = zstart + i*zres;
-        
-        double max =0;
        
+       double zloc = zstart + i*zres;
         
         
-        
-        if (zloc > G2_z) {
+        if (zloc > G2_z)
+        {
             double (*q) = gp2(G2_z-G1_z,zstart+0*zres,theta,el1,w1,r1,el1,w1,r1,G2_x,ix,r,c);
+            
+            for (int i2 =0; i2<300; i2++)
+            {
+                for (int j2 =0; j2<2; j2++)
+                {
+               
+                    //printf("the value of ix (2): %0.9f \t %d \t %d \t %d \n",ix[i2][j2], i2,j2, i);
+                }
+                
+            }
         }
         else
         {
             if (zloc > G1_z) {
                 double (*q) = gp1(zstart - G1_z + zres*100,r1,el1,w1,ix,r,c);
+                
+                for (int i2 =0; i2<300; i2++)
+                {
+                    for (int j2 =0; j2<2; j2++)
+                    {
+                        
+                        //printf("the value of ix (1): %0.9f \t %d \t %d \t %d \n",ix[i2][j2], i2,j2, i);
+                    }
+                    
+                }
+
             }
             else
             {
                 double (*q) = gp0(zstart + zres*1,r0,el0,w0,ix,r,c);
+                
+                for (int i2 =0; i2<300; i2++)
+                {
+                    for (int j2 =0; j2<2; j2++)
+                    {
+                        
+                        //printf("the value of ix (0): %0.9f \t %d \t %d \t %d \n",ix[i2][j2], i2,j2, i);
+                    }
+                    
+                }
+
             }
         }
         
@@ -168,6 +192,18 @@ int main()
             if (ix[k][1]<0)
             {
                 ix[k][1] = 0;
+                
+                
+                for (int i2 =0; i2<300; i2++)
+                {
+                    for (int j2 =0; j2<2; j2++)
+                    {
+                        
+                        //printf("the value of ix (0): %0.9f \t %d \t %d\n",ix[i2][j2], i2,j2);
+                    }
+                    
+                }
+
             }
             
         }
@@ -177,6 +213,7 @@ int main()
             if (ix[k][1]>max)
             {
                 max = ix[k][1];
+                //printf("the value of max is: %f",max);
             }
             
             if (ix[k][1]<=max)
@@ -191,7 +228,21 @@ int main()
             
             ix[k][1] = ix[k][1]/max;
             
-            izx[k][k+1] = ix[k][1];
+            
+            for (int i2 =0; i2<300; i2++)
+            {
+                for (int j2 =0; j2<2; j2++)
+                {
+                    
+                    //printf("the value of ix (0): %0.9f \t %d \t %d\n",ix[i2][j2], i2,j2);
+                }
+                
+            }
+
+            
+            
+            
+            izx[i][k] = ix[k][1];
         }
         
         
@@ -206,13 +257,15 @@ int main()
         //double (*q) = gp1(zstart - G1_z + zres*100,r1,el1,w1,ix,r,c);//gp1
         //double (*q) = gp2(G2_z-G1_z,zstart+0*zres,theta,el1,w1,r1,el1,w1,r1,G2_x,ix,r,c);//gp2
     
-        for(int i=0;i<300;i++)
-        {
-            for(int j=0;j<300;j++)
+        //for(int i2=0;i2<300;i2++)
+        //{
+            for(int j2=0;j2<300;j2++)
+            {
                 //printf(" %0.9f",(*((q+(i)*2) + j)));
-                printf("the value of izx : %0.9f \t %d \t %d \n",izx[i][j], i,j);
-            printf("\n");
-        }
+                printf("the value of izx : %0.9f \t %d \t %d \t %d \n",izx[i][j2], i,j2, i);
+                printf("\n");
+            }
+       // }
         
         
     }
