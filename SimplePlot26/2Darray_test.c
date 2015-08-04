@@ -167,13 +167,7 @@ int main()
         
         for (int j=0; j<zpnts; j++)
         {
-           // double max = maximumvalue(ix);
-     
-
-            
-        
-            //ix[j][1] = ix[j][1]/max;
-            
+  
             q = ixgenerator(ix);
             int f = rows*i+j;//300*i+j
             
@@ -182,13 +176,7 @@ int main()
             printf("the value of izx is: %0.10f \t %d  \n", izx[f],f);
             
         }
-        
-        
-        
-        //q =0;
-        
-        //SimplePlot::twoD("twoD",izx,0.0,1.0,0.0,1.0,300,300);
-        
+ 
     
     }
     SimplePlot::twoD("twoD",izx,0.0,1.0,0.0,1.0,rows,rows);
@@ -379,12 +367,10 @@ double (*gp1(double z12,double r1,double el1, double w1, double a[][2], int rows
     
     
     r2 = v(z12,r1,el1,w1);
-    //printf("the values of r2 and w2 are:  %f \t %f \n",r2,w2);
     
     
     el2 = el(z12, r1, el1, w1);
-    //printf("the value of el2 is : %0.12f\n",el2);
-    
+   
     
     float ReT[41][2]={{0}};
     for (int i=0; i<rowsT; i++) {
@@ -496,30 +482,21 @@ double (*gp1(double z12,double r1,double el1, double w1, double a[][2], int rows
                 {
                     coef = sinc(eta1*pi*n)*(sinc(eta1*pi*m)*pow((eta1), 2));
                     
-                    //printf("the value of eta1 is: %f\n",eta1);
-                }
+                                    }
                 else
                 {
                     coef =  ReT[x2pnts((float *)ReT, rowsT, n)][1]*ReT[x2pnts((float *)ReT, rowsT, m)][1]+ImT[x2pnts((float *)ImT, rowsT, n)][1]*ImT[x2pnts((float *)ImT, rowsT, m)][1];//
-                    //printf("the value of coef, m and n are: %0.10f \t %d \t %d \n",coef,m,n);//!!!! results match with mathematica so far.
                     
                     
                 }
                 
-                
-                
-                //printf("the value of el2 is:    %0.9f\n",el2);//ok, it matches.
                 
                 coef = coef*exp(-pi*(dn*(lambda*z12/(pow(d*el2,2)))));// added isfinite macro in order to avoid inf values
                 if (isfinite(coef)==0)
                 {
                     coef=0;
                 }
-                
-                
-                //printf("the value of coef and cutoff are: %0.10f \t %f \t %d \t %d \n",coef, cutoff,n,m,dn,dm);// coef values match
-                
-                
+              
                 
                 if (coef>=cutoff) {
                     
@@ -597,39 +574,18 @@ double (*gp2(double z12,double z23, double mytheta, double el1x, double w1x, dou
     int d5=0;
     double test1=0;
     
-    
-    
-    
-    
-    
-    // printf("the values of theta, d1,d2 and z13 are:   %0.15f \t %0.15f \t %0.15f \t %0.15f \n",theta,d1,d2,z13);// the values match with the mathematica values.
-    
-    
-    
+ 
     double el3x = el(z13, r1x, el1x, w1x);//G2z - G1z + zstart + 0*zres, r1, el1, w1
-    // printf("the value of el3x is: %0.15f\n",el3x);//value matches with mathematica
-    
-    
+ 
     double w3x = w(z13,r1x,el1x,w1x);
-    //printf("the value of w3x is: %0.15f\n",w3x);//value matches with mathematica
-    
-    
+   
     double v3x = v(z13,r1x,el1x,w1x);
-    // printf("the value of v3x is: %0.15f\n",v3x);//value matches with mathematica
-    
     
     double el3y = el(z13,r1y,el1y, w1y);
-    // printf("the value of el3y is: %0.15f\n",el3y);//value matches with mathematica
-    
-    
+ 
     double w3y = w(z13,r1y,el1y,w1y);
-    // printf("the value of w3y is: %0.15f\n",w3y);//value matches with mathematica
-    
-    
+  
     double v3y = v(z13,r1y,el1y,w1y);
-    //printf("the value of v3x is: %f\n",v3x);//value matches with mathematica
-    
-    
     
     
     
@@ -678,28 +634,16 @@ double (*gp2(double z12,double z23, double mytheta, double el1x, double w1x, dou
         }
         
     }
-    //printf("the value of xmax is: %.12Lf \n",xmax);// same value in mathematica
-    //printf("the value of xmin is: %.12Lf \n",xmin);//same value in mathematica
-    
-    //printf("the value of width is: %.12f \n",width);
-    
-    
-    
+  
     
     for(int n=-20;n<=20;n++)
     {
         for(ex=xmin; ex<xmax; ex+=width/res)
         {
             fc = 2*pi*n*ex/d;
-            
-            //printf("the value of fc is: %f and n is: %d and ex is %.12f \n",fc,n,ex); //same value in mathematica
-            
+           
             ph = -width*thick*chargeratio*pow(e_charge,2)*(2*pi*Coulomb/Plancks)/(vel*(.25*pow(width,2)-pow(ex,2)));
-            
-            // printf("the value of ph is: %f and n is: %d and ex is %.12f \n",ph,n,ex); //same value in mathematica
-            
-            
-            
+           
             
             ReT[x2pnts((float *)ReT, rowsT, n)][1] += cos(ph+fc);
             ImT[x2pnts((float *)ReT, rowsT, n)][1] += sin(ph+fc);
@@ -721,10 +665,7 @@ double (*gp2(double z12,double z23, double mytheta, double el1x, double w1x, dou
         
     }
     
-    //printf("the value of ReT is: %f and j is: %d \n",ReT[j][1],j);
-    
-    
-    
+   
     
     
     
@@ -735,7 +676,7 @@ double (*gp2(double z12,double z23, double mytheta, double el1x, double w1x, dou
     
     for (int i=0; i<rows; i++) {
         a[i][0]= xstart+(i)*((xend-xstart)/(xpnts-1));
-        //printf("the values of ix[i] and i are: %f\t \t %d\n",ix[i][0],i);//different format, but same values as in the Mathematica code
+       
     }
     
     
@@ -744,7 +685,7 @@ double (*gp2(double z12,double z23, double mytheta, double el1x, double w1x, dou
     
     for (int i=0; i<rows; i++) {
         phix[i][0]= xstart+(i)*((xend-xstart)/(xpnts-1));
-        //printf("the values of phix[i] and i are: %f\t \t %d\n",phix[i][0],i);//different format, but same values as in the Mathematica code
+        
     }
     
     
@@ -773,7 +714,7 @@ double (*gp2(double z12,double z23, double mytheta, double el1x, double w1x, dou
                             
                             coef = sinc(eta1*pi*m1)+ 0*_Complex_I;
                             coef = coef*(sinc(eta1*pi*m2+ 0*_Complex_I));
-                            //printf("the value of coef is: %f \n", coef);
+                           
                             
                         }
                         else
@@ -781,11 +722,9 @@ double (*gp2(double z12,double z23, double mytheta, double el1x, double w1x, dou
                             
                             
                             coef = ReT[a5][1]+ImT[a5][1]*_Complex_I;
-                            //printf("the value of coef and a are: %0.15f \t %0.15fi \t %d \n", crealf(coef), cimagf(coef), a);
-                            //printf("the value of coef and a are:%0.15f \t %0.15fi \t %d \n", cimagf(coef),ImT[a][1], a);
-                            
+                           
                             coef = coef*((ReT[b][1]-ImT[b][1]*_Complex_I));
-                            //printf("the value of coef is: %0.15f \t %0.15fi \t %d \n", ReT[b][1], ImT[b][1], b);
+                            
                         }
                         
                         
@@ -793,43 +732,24 @@ double (*gp2(double z12,double z23, double mytheta, double el1x, double w1x, dou
                         
                         coef = coef*(ReT[c5][1] + ImT[c5][1]*_Complex_I);
                         
-                        //printf("the value of coef is: %f \t %f \n", creal(coef), cimag(coef));
-                        
                         coef = coef*(ReT[d5][1] + ImT[d5][1]*_Complex_I);
-                        
-                        //printf("the value of coef is: %0.10f \t %0.10f \n", creal(coef), cimag(coef));
-                        
                         
                         coef=coef*(exp(-pi*pow(((dn*sin(theta)*lambda*(z23))/(d2*el3y)),2)));
                         
-                        //printf("the value of coef is: %0.10f \t %0.10f \n", creal(coef), cimag(coef));
-                        
-                        
                         coef=coef*(exp(-pi*pow((lambda*z23*(dn*cos(theta)+dm*z13/z23)/(d1*el3x)),2)));
-                        
-                        //printf("the value of coef is: %0.19f \t %0.19fi \n", crealf(coef), cimagf(coef));// results match with mathematica's!
-                        
-                        
-                        
+                       
                         
                         
                         
                         
                         
                         if (((__real__ coef)>=cutoff) || ((__imag__ coef)>=cutoff)) {
-                            //printf("the value of coef is: %0.10f \t %0.10fi \n", crealf(coef), cimagf(coef));//results match with mathematica's!
                             
                             phi = dn*n*(1-z23/v3x)*pow((cos(theta)),2) + dn*n*(1-z23/v3y)*pow((sin(theta)),2) + dn*m*(1-z13/v3x)*cos(theta);
-                            //phi = dn*n*(1-z23/v3x)+ dn*m*(1-z13/v3x)*cos(theta);
-                            
-                            //printf("the values of phi is: %f \n", phi);
-                            
-                            
+                           
                             phi = phi +(dm*n*(1-z13/v3x)*cos(theta) + dm*m*(z13/z23)*(1-z13/v3x));
-                            //printf("the values of phi is: %f \n", phi);
                             
                             phi = phi*(2*pi*lambda*z23/(pow(d1,2)));
-                            //printf("the values of phi is: %f \n", phi);
                             
                             phi = phi - (2*pi*dn*G2_x/d2);
                             
@@ -838,12 +758,7 @@ double (*gp2(double z12,double z23, double mytheta, double el1x, double w1x, dou
                             
                             
                             phix[i][1] = ((phi-(2*pi*(phix[i][0])/d2)*(dn*cos(theta)*(1-z23/v3x) + dm*(1-z13/v3x))));
-                            
-                            
-                            //printf("the values of phix[i][1] is: %f \t %d \n", phix[i][1], i);//values apparently are the same as in mathematica(zeros)
-                            
-                            
-                            
+                          
                             
                             a[i][1] = a[i][1] + ((((__real__ coef)*cos(phix[i][1]) - (__imag__ coef)*sin(phix[i][1]))*exp(-pi*pow(((phix[i][0]-(lambda*z23/d1)*(n*cos(theta)+m*(z13/z23)))/w3x),2))));
                             
