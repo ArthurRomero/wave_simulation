@@ -1,5 +1,5 @@
 //
-//  sim8.c
+//  simulation.c
 //  
 //
 //  Created by Arthur Romero on 7/10/15.
