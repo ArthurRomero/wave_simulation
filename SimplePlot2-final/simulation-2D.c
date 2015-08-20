@@ -3,8 +3,8 @@
 //  
 //
 //  Created by Arthur Romero on 7/16/15.
-//
-//
+/*The simulation aims to develop an understanding of the role of spatial coherence in an interferometer. It can be used to efficiently model a wide variety of interferometers made with gratings.The model incorporate three gratings each located an arbitrary distance away from each other and the source.The following code plots a graph of the array izx, which shows the behavior of the waves of a beam of electrons before and after each grating in the interferometer.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -72,7 +72,7 @@ int col = 2;// colomns of ix array
 int rowsT =41;// rows of ReT and Imt arrays
 double (*q)[2];//pointer used to modify ix array,for the first time, by gp0, gp1 or gp2 function.
 double (*q1)[2];//pointer used to modify ix array, for the second time, by ixgenerator function.
-double (*q3)[2];// pointer used to define the arrays ReT and ImT in the functions gp1 and gp2.
+double (*q2)[2];// pointer used to define the arrays ReT and ImT in the functions gp1 and gp2.
 double max;
 
 //Prototype functions:
@@ -116,7 +116,7 @@ int main()
         if (zloc > G2_z)
         {
             q = gp2(G2_z-G1_z,zloc-G2_z,theta,el1,w1,r1,el1,w1,r1,G2_x,ix,energy,rows,col);
-            //max = maximumvalue(ix);
+            max = maximumvalue(ix);//I printed the max values in line 154 to compare it with mathematica's array.
             q1 = ixgenerator(ix);
        
          
@@ -126,7 +126,7 @@ int main()
             if (zloc > G1_z)
             {
                 q = gp1(zloc - G1_z, r1, el1, w1,ix,energy,rows,col);
-                //max = maximumvalue(ix);
+                max = maximumvalue(ix);
                 q1 = ixgenerator(ix);
                 
 
@@ -134,7 +134,7 @@ int main()
             else
             {
                 q = gp0(zloc, r0, el0, w0,ix,energy,rows,col);
-                //max = maximumvalue(ix);
+                max = maximumvalue(ix);
                 q1 = ixgenerator(ix);
                
             }
@@ -269,7 +269,7 @@ double (*ixgenerator(double a[][2]))[2]
 
 }
 
-double (*ReTgenerator(double ReT[], double energy))[2]
+double (*ReTgenerator(double ReT[], double energy))[2]//it defines all the elements of the array ReT
 {
     
     double eta = width/d;
@@ -277,8 +277,8 @@ double (*ReTgenerator(double ReT[], double energy))[2]
     double alpha = wedgeangle*pi/180;
     double beta = tilt*pi;
     
-    long double xmin;
-    long double xmax;
+    double xmin;
+    double xmax;
     
     float fc;
     float ph;
@@ -339,15 +339,15 @@ double (*ReTgenerator(double ReT[], double energy))[2]
     
 }
 
-double (*ImTgenerator(double ImT[], double energy))[2]
+double (*ImTgenerator(double ImT[], double energy))[2]//it defines all the elements of the array ImT:
 {
     double eta = width/d;
     double vel = pow(2*energy*e_charge/e_mass,1/2);
     double alpha = wedgeangle*pi/180;
     double beta = tilt*pi;
     
-    long double xmin;
-    long double xmax;
+    double xmin;
+    double xmax;
     
     float fc;
     float ph;
@@ -413,7 +413,7 @@ double (*ImTgenerator(double ImT[], double energy))[2]
 }
 
 
-double (*gp0(double z,double r0,double el0, double w0, double a[][2],double energy, int rows, int col))[2]
+double (*gp0(double z,double r0,double el0, double w0, double a[][2],double energy, int rows, int col))[2]//defines the behavior of the waves before the first grating
 {
     
     
@@ -439,7 +439,7 @@ double (*gp0(double z,double r0,double el0, double w0, double a[][2],double ener
 
 
 
-double (*gp1(double z12,double r1,double el1, double w1, double a[][2], double energy, int rows, int col))[2]
+double (*gp1(double z12,double r1,double el1, double w1, double a[][2], double energy, int rows, int col))[2]//defines the behavior of the wave between the first and second gratings
 {
     double coef;
     double cutoff=pow(10,-3);
@@ -467,11 +467,11 @@ double (*gp1(double z12,double r1,double el1, double w1, double a[][2], double e
     
     double ReT[41]{0};
 
-    q3 = ReTgenerator(ReT,energy);
+    q2 = ReTgenerator(ReT,energy);
     
     double ImT[41]={0};
     
-    q3 = ImTgenerator(ImT,energy);
+    q2 = ImTgenerator(ImT,energy);
     
 
     
@@ -539,7 +539,7 @@ double (*gp1(double z12,double r1,double el1, double w1, double a[][2], double e
 
 
 
-double (*gp2(double z12,double z23, double mytheta, double el1x, double w1x, double r1x, double el1y, double w1y, double r1y, double G2_x, double a[][2], double energy, int rows, int col))[2]
+double (*gp2(double z12,double z23, double mytheta, double el1x, double w1x, double r1x, double el1y, double w1y, double r1y, double G2_x, double a[][2], double energy, int rows, int col))[2]//defines the behavior of the wave after the second grating
 {
     
     double lambda = sqrt((1.5*pow(10,-18))/(energy));
@@ -600,11 +600,11 @@ double (*gp2(double z12,double z23, double mytheta, double el1x, double w1x, dou
     
     double ReT[41]={0};
     
-    q3 = ReTgenerator(ReT,energy);
+    q2 = ReTgenerator(ReT,energy);
     
     double ImT[41]={0};
     
-    q3 = ImTgenerator(ImT,energy);
+    q2 = ImTgenerator(ImT,energy);
     
 
     
