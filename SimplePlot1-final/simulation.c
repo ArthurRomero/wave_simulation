@@ -69,10 +69,9 @@ double zpnts = 300;
 int rows = 300;
 int rowsT = 41;
 double (*q)[2];
+
+
 //prototype functions:
-
-
-
 
 double zp(double z, double v);// prototype
 
@@ -84,11 +83,11 @@ double v(double z,double r0, double el0, double w0, double energy);// prototype
 
 double sinc(double x);//prototype
 
-double (*ReTgenerator(double ReT[], double energy))[2];
+double (*ReTgenerator(double ReT[], double energy))[2];//prototype
 
-double (*ImTgenerator(double ReT[], double energy))[2];
+double (*ImTgenerator(double ReT[], double energy))[2];//prototype
 
-void gp0(double z,double r0,double el0, double w0,double energy);
+void gp0(double z,double r0,double el0, double w0,double energy);//prototype
 
 void gp1(double z,double r0,double el0, double w0,double energy);//prototype
 
@@ -99,31 +98,18 @@ int x2pnts(double *arr, int r, int value);//prototype
 
 
 
-
-
-
-
-
-
-
-
-
 int main( )
 {
 
     
     double energy = ((1.5*pow(10,-18))/(pow(0.00000000001,2)))*(1);
     
-    double zres = (zend-zstart)/zpnts;// matches with Mathematica code value
-    //printf("the value of zres is: %f\n",zres);
-    
+    double zres = (zend-zstart)/zpnts;
 
 
-    double w1=w(G1_z,r0,el0,w0,energy);//gp1
-   
-    double r1 = v(G1_z,r0,el0,w0,energy);//gp1
-    
-    double el1=el(G1_z,r0,el0,w0,energy);//gp1
+    double w1=w(G1_z,r0,el0,w0,energy);
+    double r1 = v(G1_z,r0,el0,w0,energy);
+    double el1=el(G1_z,r0,el0,w0,energy);
    
     
     gp0( zstart + 1*zres,r0,el0,w0, energy);
@@ -201,7 +187,7 @@ double sinc(double x)// this function avoids a division by 0
 
 
 
-int x2pnts(int value, int *arr)
+int x2pnts(int value, int *arr)//finds a value in an array and returns its respective index(ix[i][0])
 {
     
     
@@ -263,9 +249,9 @@ double (*ReTgenerator(double ReT[], double energy))[2]//it defines all the eleme
         
     }
     
-    for(int n=-((rowsT-1)/2);n<=((rowsT-1)/2);n++)//
+    for(int n=-((rowsT-1)/2);n<=((rowsT-1)/2);n++)
     {
-        for(ex=xmin; ex<xmax; ex+=width/res)//copied from above
+        for(ex=xmin; ex<xmax; ex+=width/res)
         {
             fc = 2*pi*n*ex/d;
             
@@ -364,7 +350,7 @@ double (*ImTgenerator(double ImT[], double energy))[2]//it defines all the eleme
     
 }
 
-void gp0(double z,double r0,double el0, double w0, double energy)
+void gp0(double z,double r0,double el0, double w0, double energy)//it defines the behavior of the wave before the first grating.
 {
     
     double jj;
@@ -389,8 +375,8 @@ void gp0(double z,double r0,double el0, double w0, double energy)
     
     
     
-    for (int i=0; i<300; i++) {
-        for (int j=0; j<2; j++) {
+    for (int i=0; i<rows; i++) {
+        for (int j=0; j<col; j++) {
             if (j==0) {
                 ix1[i]=ix[i][j];
             }
@@ -401,13 +387,13 @@ void gp0(double z,double r0,double el0, double w0, double energy)
     }
     
     
-    SimplePlot::graph("gp1 graph",ix1,ix2,300);
+    SimplePlot::graph("gp1 graph",ix1,ix2,rows);
 
 
 }
 
 
-void gp1(double z12,double r1,double el1, double w1, double energy)
+void gp1(double z12,double r1,double el1, double w1, double energy)//it defines the behavior of the wave between the first and second gratings.
 {
     double coef;
     double cutoff=pow(10,-3);
@@ -416,17 +402,9 @@ void gp1(double z12,double r1,double el1, double w1, double energy)
     
     double lambda = sqrt((1.5*pow(10,-18))/(energy));
     
-    double eta = width/d;
-    double vel = pow(2*energy*e_charge/e_mass,1/2);
-    double alpha = wedgeangle*pi/180;
-    double beta = tilt*pi;
-    
+
     double w2=w(z12,r1,el1,w1,energy);
-    
-    
     double r2 = v(z12,r1,el1,w1,energy);
-    
-    
     double el2 = el(z12, r1, el1, w1,energy);
     
     int pos[41]={0};
@@ -527,7 +505,7 @@ void gp1(double z12,double r1,double el1, double w1, double energy)
     
     
     for (int i=0; i<rows; i++) {
-        for (int j=0; j<2; j++) {
+        for (int j=0; j<col; j++) {
             if (j==0) {
                 ix1[i]=ix[i][j];
             }
@@ -545,26 +523,11 @@ void gp1(double z12,double r1,double el1, double w1, double energy)
     
 }
 
-
-
-
-
-
-
-
-
-
-
-void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double r1x, double el1y, double w1y, double r1y, double G2_x, double energy)
+void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double r1x, double el1y, double w1y, double r1y, double G2_x, double energy)//defines the behavior of the wave after the second gratings
 {
     
     double lambda = sqrt((1.5*pow(10,-18))/(energy));
-    double res = 1000;
-    double eta = width/d;
-    double vel = pow(2*energy*e_charge/e_mass,1/2);
-    double alpha = wedgeangle*pi/180;
-    double beta = tilt*pi;
-    
+
     double theta = pi*mytheta/180;
     double d1=d;
     double d2=d;
@@ -591,15 +554,10 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
     
     
     double el3x = el(z13, r1x, el1x, w1x, energy);//G2z - G1z + zstart + 0*zres, r1, el1, w1
-    
     double w3x = w(z13,r1x,el1x,w1x, energy);
-    
     double v3x = v(z13,r1x,el1x,w1x, energy);
-    
     double el3y = el(z13,r1y,el1y, w1y, energy);
-    
     double w3y = w(z13,r1y,el1y,w1y, energy);
-    
     double v3y = v(z13,r1y,el1y,w1y, energy);
     
     
@@ -655,7 +613,7 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
                         
                         
                         a5 = (x2pnts(m1, (int *)pos));
-                        b = (x2pnts(m2, (int *)pos));
+                        b  = (x2pnts(m2, (int *)pos));
                         c5 = (x2pnts(n1, (int *)pos));
                         d5 = (x2pnts(n2, (int *)pos));
                         
@@ -737,7 +695,7 @@ void gp2(double z12,double z23, double mytheta, double el1x, double w1x, double 
     
     
     for (int i=0; i<rows; i++) {
-        for (int j=0; j<2; j++) {
+        for (int j=0; j<col; j++) {
             if (j==0) {
                 ix3[i]=ix[i][j];
             }

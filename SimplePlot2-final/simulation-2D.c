@@ -68,11 +68,12 @@ double ypnts = 300;
 double zpnts = 300;
 
 int rows = 300;// rows of ix array
-int col = 2;// colomns of ix array
+int col = 2;// columns of ix array
 int rowsT =41;// rows of ReT and Imt arrays
+
 double (*q)[2];//pointer used to modify ix array,for the first time, by gp0, gp1 or gp2 function.
 double (*q1)[2];//pointer used to modify ix array, for the second time, by ixgenerator function.
-double (*q2)[2];// pointer used to define the arrays ReT and ImT in the functions gp1 and gp2.
+double (*q2)[1];// pointer used to define the arrays ReT and ImT in the functions gp1 and gp2.
 double max;
 
 //Prototype functions:
@@ -82,14 +83,14 @@ double w(double z,double r0, double el0, double w0, double energy);//prototype
 double el(double z,double r0, double el0, double w0, double energy);//prototype
 double v(double z,double r0, double el0, double w0, double energy);//prototype
 double sinc(double x);//prototype
-double (*ReTgenerator(double ReT[], double energy))[2];//prototype
-double (*ImTgenerator(double ReT[], double energy))[2];//prototype
+double (*ReTgenerator(double ReT[], double energy))[1];//prototype
+double (*ImTgenerator(double ReT[], double energy))[1];//prototype
 double maximumvalue(double arr[][2]);//prototype
 double (*ixgenerator(double a[][2]))[2];//prototype
-double (*gp0(double z,double r0,double el0, double w0, double a[][2],double energy, int rows, int col))[2];//prototype
-double (*gp1(double z12,double r0,double el0, double w0, double a[][2],double energy, int rows, int col))[2];//prototype
+double (*gp0(double z,double r0,double el0, double w0, double a[][2],double energy))[2];//prototype
+double (*gp1(double z12,double r0,double el0, double w0, double a[][2],double energy))[2];//prototype
 
-double (*gp2(double z12,double z23, double mytheta, double el1x, double w1x, double r1x, double el1y, double w1y, double r1y, double G2_x, double a[][2],double energy, int rows, int col))[2];//prototype
+double (*gp2(double z12,double z23, double mytheta, double el1x, double w1x, double r1x, double el1y, double w1y, double r1y, double G2_x, double a[][2],double energy))[2];//prototype
 
 int main()
 {
@@ -115,7 +116,7 @@ int main()
         
         if (zloc > G2_z)
         {
-            q = gp2(G2_z-G1_z,zloc-G2_z,theta,el1,w1,r1,el1,w1,r1,G2_x,ix,energy,rows,col);
+            q = gp2(G2_z-G1_z,zloc-G2_z,theta,el1,w1,r1,el1,w1,r1,G2_x,ix,energy);
             max = maximumvalue(ix);//I printed the max values in line 154 to compare it with mathematica's array.
             q1 = ixgenerator(ix);
        
@@ -125,7 +126,7 @@ int main()
         {
             if (zloc > G1_z)
             {
-                q = gp1(zloc - G1_z, r1, el1, w1,ix,energy,rows,col);
+                q = gp1(zloc - G1_z, r1, el1, w1,ix,energy);
                 max = maximumvalue(ix);
                 q1 = ixgenerator(ix);
                 
@@ -133,7 +134,7 @@ int main()
             }
             else
             {
-                q = gp0(zloc, r0, el0, w0,ix,energy,rows,col);
+                q = gp0(zloc, r0, el0, w0,ix,energy);
                 max = maximumvalue(ix);
                 q1 = ixgenerator(ix);
                
@@ -269,7 +270,7 @@ double (*ixgenerator(double a[][2]))[2]
 
 }
 
-double (*ReTgenerator(double ReT[], double energy))[2]//it defines all the elements of the array ReT
+double (*ReTgenerator(double ReT[], double energy))[1]//it defines all the elements of the array ReT. ReT is used to define ix in the functions gp1 and gp2.
 {
     
     double eta = width/d;
@@ -339,7 +340,7 @@ double (*ReTgenerator(double ReT[], double energy))[2]//it defines all the eleme
     
 }
 
-double (*ImTgenerator(double ImT[], double energy))[2]//it defines all the elements of the array ImT:
+double (*ImTgenerator(double ImT[], double energy))[1]//it defines all the elements of the array ImT. ImT is used to define ix in the functions gp1 and gp2.
 {
     double eta = width/d;
     double vel = pow(2*energy*e_charge/e_mass,1/2);
@@ -413,7 +414,7 @@ double (*ImTgenerator(double ImT[], double energy))[2]//it defines all the eleme
 }
 
 
-double (*gp0(double z,double r0,double el0, double w0, double a[][2],double energy, int rows, int col))[2]//defines the behavior of the waves before the first grating
+double (*gp0(double z,double r0,double el0, double w0, double a[][2],double energy))[2]//it defines the behavior of the waves before the first grating
 {
     
     
@@ -439,19 +440,14 @@ double (*gp0(double z,double r0,double el0, double w0, double a[][2],double ener
 
 
 
-double (*gp1(double z12,double r1,double el1, double w1, double a[][2], double energy, int rows, int col))[2]//defines the behavior of the wave between the first and second gratings
+double (*gp1(double z12,double r1,double el1, double w1, double a[][2], double energy))[2]//it defines the behavior of the wave between the first and second gratings
 {
-    double coef;
-    double cutoff=pow(10,-3);
-    double lim=5;
-    
     
     double lambda = sqrt((1.5*pow(10,-18))/(energy));
     
-    double eta = width/d;
-    double vel = pow(2*energy*e_charge/e_mass,1/2);
-    double alpha = wedgeangle*pi/180;
-    double beta = tilt*pi;
+    double coef;
+    double cutoff=pow(10,-3);
+    double lim=5;
  
     double w2=w(z12,r1,el1,w1,energy);
     double r2 = v(z12,r1,el1,w1,energy);
@@ -462,10 +458,8 @@ double (*gp1(double z12,double r1,double el1, double w1, double a[][2], double e
     {
         pos[i]=i-((rowsT-1)/2);
     }
-
-   
     
-    double ReT[41]{0};
+    double ReT[41]={0};
 
     q2 = ReTgenerator(ReT,energy);
     
@@ -539,28 +533,18 @@ double (*gp1(double z12,double r1,double el1, double w1, double a[][2], double e
 
 
 
-double (*gp2(double z12,double z23, double mytheta, double el1x, double w1x, double r1x, double el1y, double w1y, double r1y, double G2_x, double a[][2], double energy, int rows, int col))[2]//defines the behavior of the wave after the second grating
+double (*gp2(double z12,double z23, double mytheta, double el1x, double w1x, double r1x, double el1y, double w1y, double r1y, double G2_x, double a[][2], double energy))[2]//it defines the behavior of the wave after the second grating
 {
     
     double lambda = sqrt((1.5*pow(10,-18))/(energy));
-    double res = 1000;
-    double eta = width/d;
-    double vel = pow(2*energy*e_charge/e_mass,1/2);
-    double alpha = wedgeangle*pi/180;
-    double beta = tilt*pi;
     
     double theta = pi*mytheta/180;
     double d1=d;
     double d2=d;
     double z13 = z12+z23;
-
-    
     double phi =0;
-    
-    double cutoff = 0.001;
-    
+    double cutoff=pow(10,-3);
     double lim =5;
-    
     double _Complex coef;
 
     double dn = 0;
@@ -575,15 +559,10 @@ double (*gp2(double z12,double z23, double mytheta, double el1x, double w1x, dou
     
  
     double el3x = el(z13, r1x, el1x, w1x, energy);//G2z - G1z + zstart + 0*zres, r1, el1, w1
- 
     double w3x = w(z13,r1x,el1x,w1x, energy);
-   
     double v3x = v(z13,r1x,el1x,w1x, energy);
-    
     double el3y = el(z13,r1y,el1y, w1y, energy);
- 
     double w3y = w(z13,r1y,el1y,w1y, energy);
-  
     double v3y = v(z13,r1y,el1y,w1y, energy);
     
     
@@ -593,9 +572,6 @@ double (*gp2(double z12,double z23, double mytheta, double el1x, double w1x, dou
     {
         pos[i]=i-((rowsT-1)/2);
     }
-    
-    
-    
     
     
     double ReT[41]={0};
