@@ -614,7 +614,7 @@ double (*gp2(double z12,double z23, double mytheta, double el1x, double w1x, dou
                         
                         
                         a5 = m1 + ((rowsT-1)/2);
-                        b = m2 + ((rowsT-1)/2);
+                        b  = m2 + ((rowsT-1)/2);
                         c5 = n1 + ((rowsT-1)/2);
                         d5 = n2 + ((rowsT-1)/2);
                         
